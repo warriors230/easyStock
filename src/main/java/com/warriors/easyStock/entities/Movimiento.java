@@ -1,17 +1,19 @@
 package com.warriors.easyStock.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.time.LocalDate;
 
-@Getter
-@Setter
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "movimiento")
-public class Movimiento {
+public class Movimiento implements Serializable {
     @Id
     @Column(name = "id_movimiento", nullable = false)
     private Integer id;

@@ -1,19 +1,21 @@
 package com.warriors.easyStock.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 
-@Getter
-@Setter
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "administrador_supremo")
-public class AdministradorSupremo {
+public class AdministradorSupremo implements Serializable {
     @Id
     @Column(name = "id_administrador", nullable = false)
     private Integer id;
