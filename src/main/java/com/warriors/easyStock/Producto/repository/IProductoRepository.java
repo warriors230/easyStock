@@ -1,4 +1,4 @@
-package com.warriors.easyStock.repository;
+package com.warriors.easyStock.Producto.repository;
 
 import com.warriors.easyStock.entities.Producto;
 import org.springframework.data.jpa.repository.JpaRepository;
