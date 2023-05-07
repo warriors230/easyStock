@@ -1,4 +1,4 @@
-package com.warriors.easyStock.entities;
+package com.warriors.easyStock.Cliente.entities;
 
 import lombok.*;
 

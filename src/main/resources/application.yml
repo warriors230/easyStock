@@ -1,10 +1,10 @@
   # Spring Boot configuration
   spring:
     # Security configuration
-    security:
-      user:
-        name: user
-        password: user
+    #security:
+      #user:
+        #name: user
+        #password: user
     # Database
     datasource:
       driver-class-name: org.postgresql.Driver

@@ -1,5 +1,6 @@
-package com.warriors.easyStock.entities;
+package com.warriors.easyStock.Movimiento.entities;
 
+import com.warriors.easyStock.Cliente.entities.Cliente;
 import lombok.*;
 
 import javax.persistence.*;
