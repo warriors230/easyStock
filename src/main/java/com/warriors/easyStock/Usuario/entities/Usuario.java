@@ -54,4 +54,8 @@ public class Usuario implements Serializable {
     @Column(name = "rol", length = 100)
     private String rol;
 
+    @Size(max = 200)
+    @Column(name = "correo", length = 200)
+    private String correo;
+
 }
