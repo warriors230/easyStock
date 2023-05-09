@@ -109,4 +109,9 @@ public class UsuarioServiceImpl implements IUsuarioService {
         return usuarioRepository.existsByCorreo(correo);
     }
 
+    @Override
+    public boolean existsByUsuario(String usuario) {
+        return usuarioRepository.existsByUsuario(usuario);
+    }
+
 }

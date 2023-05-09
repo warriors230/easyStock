@@ -16,5 +16,6 @@ public interface IUsuarioService {
     Optional<Usuario> findByTokenPassword(String tokenPassword);
     boolean existsByNombre(String nombre);
     boolean existsByCorreo(String correo);
+    boolean existsByUsuario(String usuario);
 
 }
