@@ -75,9 +75,7 @@ public class Usuario implements Serializable {
             name = "users_roles",
             joinColumns = @JoinColumn(name = "id_usuario"),
             inverseJoinColumns = @JoinColumn(name = "id_rol"),
-            uniqueConstraints = {@UniqueConstraint(columnNames = {"id_usuario", "id_rol"})}
-
-    )
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"id_usuario", "id_rol"})})
     private Set<Rol> roles = new HashSet<>();
 
 

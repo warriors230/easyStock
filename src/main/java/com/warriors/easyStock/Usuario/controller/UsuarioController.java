@@ -1,14 +1,13 @@
 package com.warriors.easyStock.Usuario.controller;
 
 
-import com.warriors.easyStock.Security.dto.Mensaje;
-import com.warriors.easyStock.Security.dto.NuevoUsuario;
+import com.warriors.easyStock.Usuario.dto.UsuarioNuevoDTO;
 import com.warriors.easyStock.Usuario.entities.Usuario;
 import com.warriors.easyStock.Usuario.service.IUsuarioService;
 import com.warriors.easyStock.utils.exceptions.ExistException;
+import com.warriors.easyStock.utils.exceptions.NotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -27,12 +26,12 @@ public class UsuarioController {
     }
 
     @PostMapping("/crear")
-    public ResponseEntity<?> crearUsuarios(@RequestBody NuevoUsuario usuario) {
-        if(usuarioService.existsByNombre(usuario.getNombre())){
-            throw new ExistException("Nombre "+usuario.getNombre());
+    public ResponseEntity<?> crearUsuarios(@RequestBody UsuarioNuevoDTO usuario) {
+        if (usuarioService.existsByNombre(usuario.getNombre())) {
+            throw new ExistException("Nombre " + usuario.getNombre());
         }
-        if(usuarioService.existsByCorreo(usuario.getCorreo())) {
-            throw new ExistException("correo "+usuario.getCorreo());
+        if (usuarioService.existsByCorreo(usuario.getCorreo())) {
+            throw new ExistException("correo " + usuario.getCorreo());
         }
         return ResponseEntity.ok().body(usuarioService.crearUsuario(usuario));
     }
@@ -46,22 +45,23 @@ public class UsuarioController {
         return ResponseEntity.ok().body(usuarioService.ListarUsuarios());
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/actualizar/{id}")
-    public ResponseEntity<Usuario> actualizarUsuario(
+    public ResponseEntity<?> actualizarUsuario(
             @PathVariable Integer id,
-            @RequestBody Usuario usuario) {
+            @RequestBody UsuarioNuevoDTO usuario) {
         if (usuario != null) {
             return ResponseEntity.ok().body(usuarioService.editarUsuarios(id, usuario));
         } else {
-            return ResponseEntity.noContent().build();
+            throw new NotFoundException("usuario " + usuario.getNombre());
         }
     }
-
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/eliminar/{id}")
-    public ResponseEntity<Void> eliminarUsuario(@PathVariable int id) {
+    public ResponseEntity<?> eliminarUsuario(@PathVariable int id) {
         Usuario usuarioBD = usuarioService.eliminarUsuarios(id);
         if (usuarioBD != null) {
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok().body("Se elimino el usuario "+usuarioBD.getNombre());
         } else {
             return ResponseEntity.noContent().build();
         }

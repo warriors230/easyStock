@@ -1,6 +1,6 @@
 package com.warriors.easyStock.Usuario.service.impl;
 
-import com.warriors.easyStock.Security.dto.NuevoUsuario;
+import com.warriors.easyStock.Usuario.dto.UsuarioNuevoDTO;
 import com.warriors.easyStock.Usuario.entities.Usuario;
 import com.warriors.easyStock.Usuario.repository.IUsuarioRepository;
 import com.warriors.easyStock.Usuario.service.IUsuarioService;
@@ -46,7 +46,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
     }
 
     @Override
-    public Usuario crearUsuario(NuevoUsuario us) {
+    public Usuario crearUsuario(UsuarioNuevoDTO us) {
         Usuario usuario =
                 new Usuario(us.getNombre(), us.getTelefono(), us.getDireccion(),
                         us.getCiudad(), us.getUsuario(), passwordEncoder.encode(us.getContrasena()),
@@ -65,7 +65,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
     }
 
     @Override
-    public Usuario editarUsuarios(int id, Usuario usuario) {
+    public Usuario editarUsuarios(int id, UsuarioNuevoDTO usuario) {
         Usuario usuarioBD = usuarioRepository.findById(id).orElse(null);
         if (usuarioBD != null) {
             usuarioBD.setNombre(usuario.getNombre());
@@ -74,11 +74,13 @@ public class UsuarioServiceImpl implements IUsuarioService {
             usuarioBD.setTelefono(usuario.getTelefono());
             usuarioBD.setDireccion(usuario.getDireccion());
             usuarioBD.setCiudad(usuario.getCiudad());
+            usuarioBD.setDocumento(usuario.getDocumento());
+            usuarioBD.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
             usuarioRepository.save(usuarioBD);
 
             return usuarioBD;
         }
-        throw new NotFoundException("El usuario "+usuario.getNombre()+" "+"No existe");
+        throw new NotFoundException("El usuario con id "+id+" "+"No existe");
     }
 
     @Override
@@ -88,7 +90,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
             usuarioRepository.deleteById(id);
             return usuarioBD;
         } else {
-            return usuarioBD;
+            throw new NotFoundException("El usuario con id "+id+" "+"No existe");
         }
 
     }

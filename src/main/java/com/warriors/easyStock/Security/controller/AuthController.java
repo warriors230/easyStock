@@ -1,7 +1,7 @@
 package com.warriors.easyStock.Security.controller;
 
 import com.warriors.easyStock.Security.dto.JwtDto;
-import com.warriors.easyStock.Security.dto.LoginUsuario;
+import com.warriors.easyStock.Security.dto.LoginUsuarioDTO;
 import com.warriors.easyStock.Security.jwt.JwtProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,7 +28,7 @@ public class AuthController {
     JwtProvider jwtProvider;
 
     @PostMapping("/login")
-    public ResponseEntity<JwtDto> login(@RequestBody LoginUsuario loginUsuario) {
+    public ResponseEntity<JwtDto> login(@RequestBody LoginUsuarioDTO loginUsuario) {
         Authentication authentication =
                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUsuario.getCorreo(), loginUsuario.getPassword()));
         SecurityContextHolder.getContext().setAuthentication(authentication);

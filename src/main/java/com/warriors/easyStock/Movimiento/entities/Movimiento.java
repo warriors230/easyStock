@@ -1,12 +1,13 @@
 package com.warriors.easyStock.Movimiento.entities;
 
-import com.warriors.easyStock.Cliente.entities.Cliente;
+import com.warriors.easyStock.Usuario.entities.Usuario;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -20,14 +21,15 @@ public class Movimiento implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Temporal(TemporalType.DATE)
     @Column(name = "fecha_movimiento")
-    private LocalDate fechaMovimiento;
+    private Date fechaMovimiento;
 
     @Size(max = 255)
     @Column(name = "descripcion")
     private String descripcion;
 
-    @Size(max = 255)
+    @Size(max = 3)
     @Column(name = "tipo_mov")
     private String tipoMov;
 
@@ -40,14 +42,33 @@ public class Movimiento implements Serializable {
     @Column(name = "descuento_aplicado")
     private Double descuentoAplicado;
 
-    @Column(name = "id_usuario")
-    private Integer idUsuario;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_cliente")
-    private Cliente idCliente;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Usuario idVendedor;
 
-    @Column(name = "id_producto")
-    private Integer idProducto;
+    @ManyToOne(fetch = FetchType.EAGER)
+    private Usuario idCliente;
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "id_movimiento")
+    private List<ItemMovimiento> itemMovimientos;
+
+    public void addItemsMovimiento(ItemMovimiento item) {
+        this.itemMovimientos.add(item);
+    }
+
+    @PrePersist
+    public void Prepersist() {
+        this.fechaMovimiento = new Date();
+
+    }
+
+    public Double getTotal(){
+        Double total = 0.0;
+        for (ItemMovimiento item:itemMovimientos) {
+            total += item.calcularImporte();
+        }
+        return total;
+    }
 
 }

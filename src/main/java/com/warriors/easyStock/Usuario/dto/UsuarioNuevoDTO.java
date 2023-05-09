@@ -1,13 +1,10 @@
-package com.warriors.easyStock.Security.dto;
+package com.warriors.easyStock.Usuario.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +12,7 @@ import java.util.Set;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class NuevoUsuario {
+public class UsuarioNuevoDTO {
 
     private String nombre;
 

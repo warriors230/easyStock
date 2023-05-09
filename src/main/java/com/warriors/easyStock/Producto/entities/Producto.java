@@ -48,4 +48,8 @@ public class Producto implements Serializable {
     @Column(name = "cantidad_stock", nullable = false)
     private Double cantidadStock;
 
+    public Double calcularGanancia(){
+        return  (valorVenta-valorCompra);
+    }
+
 }
