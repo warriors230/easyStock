@@ -25,6 +25,10 @@ public class Usuario implements Serializable {
     @NotNull
     @Column(name = "nombre", nullable = false)
     private String nombre;
+    @Size(max = 255)
+    @NotNull
+    @Column(name = "documento", nullable = false, unique = true)
+    private String documento;
 
     @Size(max = 20)
     @NotNull
@@ -79,7 +83,7 @@ public class Usuario implements Serializable {
 
     public Usuario(String nombre, String telefono, String direccion,
                    String ciudad, String usuario, String contrasena,
-                   Boolean estado, String correo) {
+                   Boolean estado, String correo, String documento) {
         this.nombre = nombre;
         this.telefono = telefono;
         this.direccion = direccion;
@@ -88,6 +92,7 @@ public class Usuario implements Serializable {
         this.contrasena = contrasena;
         this.estado = estado;
         this.correo = correo;
+        this.documento = documento;
     }
 
     @PrePersist

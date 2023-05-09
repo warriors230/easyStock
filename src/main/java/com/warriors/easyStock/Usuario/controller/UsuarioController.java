@@ -5,6 +5,7 @@ import com.warriors.easyStock.Security.dto.Mensaje;
 import com.warriors.easyStock.Security.dto.NuevoUsuario;
 import com.warriors.easyStock.Usuario.entities.Usuario;
 import com.warriors.easyStock.Usuario.service.IUsuarioService;
+import com.warriors.easyStock.utils.exceptions.ExistException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -28,10 +29,10 @@ public class UsuarioController {
     @PostMapping("/crear")
     public ResponseEntity<?> crearUsuarios(@RequestBody NuevoUsuario usuario) {
         if(usuarioService.existsByNombre(usuario.getNombre())){
-            return new ResponseEntity(new Mensaje("ese nombre ya existe"), HttpStatus.BAD_REQUEST);
+            throw new ExistException("Nombre "+usuario.getNombre());
         }
         if(usuarioService.existsByCorreo(usuario.getCorreo())) {
-            return new ResponseEntity(new Mensaje("ese correo ya existe"), HttpStatus.BAD_REQUEST);
+            throw new ExistException("correo "+usuario.getCorreo());
         }
         return ResponseEntity.ok().body(usuarioService.crearUsuario(usuario));
     }

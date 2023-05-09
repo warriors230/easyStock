@@ -1,6 +1,9 @@
 package com.warriors.easyStock.Security.jwt;
 
 import com.warriors.easyStock.Security.details.UserDetailsImpl;
+import com.warriors.easyStock.utils.exceptions.ExpireTokenException;
+import com.warriors.easyStock.utils.exceptions.NoSoporteJWTException;
+import com.warriors.easyStock.utils.exceptions.TokenMalFormadoException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
@@ -22,7 +25,7 @@ import java.util.stream.Collectors;
 @Component
 @Slf4j
 public class JwtProvider {
-        @Value("${security.jwt.token.secret-key}")
+    @Value("${security.jwt.token.secret-key}")
     private String secret;
 
     @Value("${security.jwt.token.expire-length}")
@@ -31,7 +34,7 @@ public class JwtProvider {
     public String generateToken(Authentication authentication) {
 
         UserDetailsImpl usuarioLogueado = (UserDetailsImpl) authentication.getPrincipal();
-        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> "+usuarioLogueado);
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>> " + usuarioLogueado);
 
         List<String> roles = usuarioLogueado.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList());
         return Jwts.builder()
@@ -53,17 +56,16 @@ public class JwtProvider {
             Jwts.parserBuilder().setSigningKey(getSecret(secret)).build().parseClaimsJws(token);
             return true;
         } catch (MalformedJwtException e) {
-            log.error("token mal formado");
+            throw new TokenMalFormadoException("Token " + token);
         } catch (UnsupportedJwtException e) {
-            log.error("token no soportado");
+            throw new NoSoporteJWTException("token " + token);
         } catch (ExpiredJwtException e) {
-            log.error("token expirado");
+            throw new ExpireTokenException("token " + token);
         } catch (IllegalArgumentException e) {
-            log.error("token vacío");
+            throw new TokenMalFormadoException("Token " + token);
         } catch (SignatureException e) {
-            log.error("fail en la firma");
+            throw new NoSoporteJWTException("token " + token);
         }
-        return false;
     }
 
     private Key getSecret(String secret) {

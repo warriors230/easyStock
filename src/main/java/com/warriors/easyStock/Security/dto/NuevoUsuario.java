@@ -18,6 +18,8 @@ import java.util.Set;
 public class NuevoUsuario {
 
     private String nombre;
+
+    private String documento;
     private String telefono;
     private String direccion;
     private String ciudad;

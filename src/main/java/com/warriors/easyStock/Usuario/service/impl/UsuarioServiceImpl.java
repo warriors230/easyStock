@@ -7,6 +7,7 @@ import com.warriors.easyStock.Usuario.service.IUsuarioService;
 import com.warriors.easyStock.roles.entities.Rol;
 import com.warriors.easyStock.roles.enums.RolNombre;
 import com.warriors.easyStock.roles.service.IRolService;
+import com.warriors.easyStock.utils.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +50,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
         Usuario usuario =
                 new Usuario(us.getNombre(), us.getTelefono(), us.getDireccion(),
                         us.getCiudad(), us.getUsuario(), passwordEncoder.encode(us.getContrasena()),
-                        us.getEstado(), us.getCorreo());
+                        us.getEstado(), us.getCorreo(),us.getDocumento());
         Set<Rol> roles = new HashSet<>();
         roles.add(rolService.getByRolNombre(RolNombre.ROLE_USUARIO).get());
         if (us.getRoles().contains("admin"))
@@ -77,7 +78,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
             return usuarioBD;
         }
-        return null;
+        throw new NotFoundException("El usuario "+usuario.getNombre()+" "+"No existe");
     }
 
     @Override
