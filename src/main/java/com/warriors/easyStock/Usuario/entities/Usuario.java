@@ -40,7 +40,7 @@ public class Usuario implements Serializable {
     private String ciudad;
 
     @Size(max = 100)
-    @Column(name = "usuario", length = 100)
+    @Column(name = "usuario", length = 100, unique=true)
     private String usuario;
 
     @Size(max = 150)
