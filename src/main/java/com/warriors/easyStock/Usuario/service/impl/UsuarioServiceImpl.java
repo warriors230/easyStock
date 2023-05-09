@@ -35,13 +35,12 @@ public class UsuarioServiceImpl implements IUsuarioService {
     PasswordEncoder passwordEncoder;
 
     @Override
-    public List<Usuario> ListarUsuarios() {
+    public List<Usuario> listarUsuarios() {
         List<Usuario> listaUsuarioBD = usuarioRepository.findAll();
-        if (!listaUsuarioBD.isEmpty()) {
-            return listaUsuarioBD;
-        } else {
-            return null;
+        if (listaUsuarioBD.isEmpty()) {
+            throw new NotFoundException("No hay usuarios en el sistema!");
         }
+        return listaUsuarioBD;
 
     }
 
@@ -50,7 +49,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
         Usuario usuario =
                 new Usuario(us.getNombre(), us.getTelefono(), us.getDireccion(),
                         us.getCiudad(), us.getUsuario(), passwordEncoder.encode(us.getContrasena()),
-                        us.getEstado(), us.getCorreo(),us.getDocumento());
+                        us.getEstado(), us.getCorreo(), us.getDocumento());
         Set<Rol> roles = new HashSet<>();
         roles.add(rolService.getByRolNombre(RolNombre.ROLE_USUARIO).get());
         if (us.getRoles().contains("admin"))
@@ -80,7 +79,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
             return usuarioBD;
         }
-        throw new NotFoundException("El usuario con id "+id+" "+"No existe");
+        throw new NotFoundException("El usuario con id " + id + " " + "No existe");
     }
 
     @Override
@@ -90,7 +89,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
             usuarioRepository.deleteById(id);
             return usuarioBD;
         } else {
-            throw new NotFoundException("El usuario con id "+id+" "+"No existe");
+            throw new NotFoundException("El usuario con id " + id + " " + "No existe");
         }
 
     }

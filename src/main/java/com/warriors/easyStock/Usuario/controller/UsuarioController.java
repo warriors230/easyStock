@@ -39,31 +39,20 @@ public class UsuarioController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/listar")
     public ResponseEntity<List<Usuario>> listarUsuarios() {
-        if (usuarioService.ListarUsuarios() == null) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok().body(usuarioService.ListarUsuarios());
+        return ResponseEntity.ok().body(usuarioService.listarUsuarios());
     }
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PutMapping("/actualizar/{id}")
-    public ResponseEntity<?> actualizarUsuario(
-            @PathVariable Integer id,
-            @RequestBody UsuarioNuevoDTO usuario) {
-        if (usuario != null) {
-            return ResponseEntity.ok().body(usuarioService.editarUsuarios(id, usuario));
-        } else {
-            throw new NotFoundException("usuario " + usuario.getNombre());
-        }
+    public ResponseEntity<?> actualizarUsuario(@PathVariable Integer id, @RequestBody UsuarioNuevoDTO usuario) {
+        return ResponseEntity.ok().body(usuarioService.editarUsuarios(id, usuario));
     }
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarUsuario(@PathVariable int id) {
         Usuario usuarioBD = usuarioService.eliminarUsuarios(id);
-        if (usuarioBD != null) {
-            return ResponseEntity.ok().body("Se elimino el usuario "+usuarioBD.getNombre());
-        } else {
-            return ResponseEntity.noContent().build();
-        }
+        return ResponseEntity.ok().body("Se elimino el usuario " + usuarioBD.getNombre());
+
     }
 }

@@ -7,7 +7,7 @@ import com.warriors.easyStock.Producto.entities.Producto;
 import java.util.List;
 
 public interface IProductoService {
-    public List<Producto> ListarProductos();
+    public List<Producto> listarProductos();
     public Producto crearProducto(Producto producto);
 
     public Producto editarProducto(int id, Producto producto);

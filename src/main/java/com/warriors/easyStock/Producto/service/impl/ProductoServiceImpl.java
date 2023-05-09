@@ -1,13 +1,12 @@
 package com.warriors.easyStock.Producto.service.impl;
 
-import com.warriors.easyStock.Producto.dto.ProductoDTO;
+
 import com.warriors.easyStock.Producto.entities.Producto;
 import com.warriors.easyStock.Producto.repository.IProductoRepository;
 import com.warriors.easyStock.Producto.service.IProductoService;
-import com.warriors.easyStock.Usuario.entities.Usuario;
 import com.warriors.easyStock.utils.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,7 +19,7 @@ public class ProductoServiceImpl implements IProductoService {
     private IProductoRepository productoRepository;
 
     @Override
-    public List<Producto> ListarProductos() {
+    public List<Producto> listarProductos() {
         List<Producto> listaProductos = productoRepository.findAll();
         if (listaProductos.isEmpty()) {
             throw new NotFoundException("No hay productos en el sistema!");
@@ -52,6 +51,12 @@ public class ProductoServiceImpl implements IProductoService {
 
     @Override
     public Producto eliminarProducto(int id) {
-        return null;
+        Producto productoBD = productoRepository.findById(id).orElse(null);
+        if (productoBD != null) {
+            productoRepository.deleteById(id);
+            return productoBD;
+        } else {
+            throw new NotFoundException("El producto con id "+id+" "+"No existe");
+        }
     }
 }
