@@ -16,10 +16,11 @@ import java.io.Serializable;
 public class MovimientoProducto implements Serializable {
     @Id
     @Column(name = "movimiento_id_producto")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer movimientoIdProducto;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.EAGER, optional = false)
     @JoinColumn(name = "producto_id_producto", nullable = false)
     private Producto productoIdProducto;
 

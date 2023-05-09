@@ -6,5 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface IUsuarioRepository extends JpaRepository<Usuario,Integer> {
-    public Optional <Usuario> findOneByCorreo(String correo);
+    Optional<Usuario> findByUsuarioOrCorreo(String usuario, String correo);
+    Optional<Usuario> findByTokenPassword(String tokenPassword);
+    boolean existsByNombre(String nombre);
+    boolean existsByCorreo(String correo);
 }

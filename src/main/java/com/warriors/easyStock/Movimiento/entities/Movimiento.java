@@ -17,6 +17,7 @@ import java.time.LocalDate;
 public class Movimiento implements Serializable {
     @Id
     @Column(name = "id_movimiento", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "fecha_movimiento")

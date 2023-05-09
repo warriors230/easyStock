@@ -1,9 +1,13 @@
 package com.warriors.easyStock.Usuario.controller;
 
 
+import com.warriors.easyStock.Security.dto.Mensaje;
+import com.warriors.easyStock.Security.dto.NuevoUsuario;
 import com.warriors.easyStock.Usuario.entities.Usuario;
 import com.warriors.easyStock.Usuario.service.IUsuarioService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
+@Slf4j
 public class UsuarioController {
     private IUsuarioService usuarioService;
 
@@ -20,7 +25,13 @@ public class UsuarioController {
     }
 
     @PostMapping("/crear")
-    public ResponseEntity<Usuario> crearUsuarios(@RequestBody Usuario usuario) {
+    public ResponseEntity<?> crearUsuarios(@RequestBody NuevoUsuario usuario) {
+        if(usuarioService.existsByNombre(usuario.getNombre())){
+            return new ResponseEntity(new Mensaje("ese nombre ya existe"), HttpStatus.BAD_REQUEST);
+        }
+        if(usuarioService.existsByCorreo(usuario.getCorreo())) {
+            return new ResponseEntity(new Mensaje("ese correo ya existe"), HttpStatus.BAD_REQUEST);
+        }
         return ResponseEntity.ok().body(usuarioService.crearUsuario(usuario));
     }
 
