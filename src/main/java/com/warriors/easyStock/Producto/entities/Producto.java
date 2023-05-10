@@ -52,7 +52,7 @@ public class Producto implements Serializable {
     @NotNull
     @JsonProperty("cantidad_stock")
     @Column(name = "cantidad_stock", nullable = false)
-    private Double cantidadStock;
+    private int cantidadStock;
     @JsonProperty("fecha_creacion")
     @Temporal(TemporalType.DATE)
     @Column(name = "fecha_creacion")
