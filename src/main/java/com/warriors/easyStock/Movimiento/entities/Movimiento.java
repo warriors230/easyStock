@@ -31,15 +31,16 @@ public class Movimiento implements Serializable {
     private String descripcion;
 
     @Size(max = 3)
+    @JsonProperty("tipo_movimiento")
     @Column(name = "tipo_movimiento")
     private String tipoMovimiento;
-
+    @JsonProperty("id_remitente")
     @Column(name = "id_remitente")
     private Integer idRemitente;
-
+    @JsonProperty("id_destino")
     @Column(name = "id_destino")
     private Integer idDestino;
-
+    @JsonProperty("descuento_aplicado")
     @Column(name = "descuento_aplicado")
     private Double descuentoAplicado;
 

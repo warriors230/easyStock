@@ -13,6 +13,7 @@ import com.warriors.easyStock.utils.ConstantesSistema;
 import com.warriors.easyStock.utils.exceptions.ConflictException;
 import lombok.AllArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,12 +27,13 @@ import java.util.List;
 public class MovimientoServiceImpl implements IMovimientoService {
 
 
+    @Autowired
     IUsuarioService usuarioService;
-
+    @Autowired
     IMovimientoRepository movimientoRepository;
-
+    @Autowired
     IItemMovimientoService itemMovimientoService;
-
+    @Autowired
     IProductoService productoService;
 
 
@@ -39,7 +41,7 @@ public class MovimientoServiceImpl implements IMovimientoService {
     public Movimiento guardarMovimiento(Movimiento movimiento, int codigoCliente, int codigoVendedor) {
         Usuario cliente = usuarioService.buscarId(codigoCliente);
         Usuario vendedor = usuarioService.buscarId(codigoVendedor);
-        ItemMovimiento itemMovimientos = new ItemMovimiento();
+        List<ItemMovimiento> lsitemMovimientos = new ArrayList<>();
 
         Producto producto;
         movimiento.setCliente(cliente);
@@ -50,38 +52,42 @@ public class MovimientoServiceImpl implements IMovimientoService {
                 producto = productoService.buscarSerial(item.getProducto().getSerialID());
                 if (producto != null) {
                     producto.setCantidadStock(producto.getCantidadStock() + item.getCantidad());
-                    productoService.editarProducto(producto.getId(),producto);
+                    productoService.editarProducto(producto.getId(), producto);
+                    item.setValorItemMovimiento(item.calcularImporte());
                     itemMovimientoService.crearItem(item);
+                    lsitemMovimientos.add(item);
 
-                }else{
+                } else {
                     producto.setCantidadStock(item.getCantidad());
                     producto.setEstado(true);
                     productoService.crearProducto(producto);
+                    item.setValorItemMovimiento(item.calcularImporte());
                     itemMovimientoService.crearItem(item);
+                    lsitemMovimientos.add(item);
                 }
-             }
-            movimiento.setValorMovimiento(movimiento.getTotal()-movimiento.calcularDescuento());
-            movimientoRepository.save(movimiento);
+            }
+            movimiento.setItemMovimientos(lsitemMovimientos);
+            movimiento.setValorMovimiento(movimiento.getTotal() - movimiento.calcularDescuento());
+
         } else {
             for (ItemMovimiento item : movimiento.getItemMovimientos()) {
                 producto = productoService.buscarId(item.getProducto().getId());
                 if (producto.getCantidadStock() == 0) {
                     throw new ConflictException("No tiene cantidad disponible en el inventario para realizar la venta");
+                } else if (producto.getCantidadStock() - item.getCantidad() < 0) {
+                    throw new ConflictException("La cantidad solicitada sobrepasa la cantidad en el inventario. Posee " + producto.getCantidadStock() + " cantidades en el inventario");
                 }
-                itemMovimientos.setCantidad(item.getCantidad());
-                itemMovimientos.setProducto(item.getProducto());
+
                 producto.setCantidadStock(producto.getCantidadStock() - item.getCantidad());
                 productoService.editarProducto(producto.getId(), producto);
-                itemMovimientoService.crearItem(itemMovimientos);
-
+                item.setValorItemMovimiento(item.calcularImporte());
+                itemMovimientoService.crearItem(item);
+                lsitemMovimientos.add(item);
             }
+            movimiento.setItemMovimientos(lsitemMovimientos);
+            movimiento.setValorMovimiento(movimiento.getTotal() - movimiento.calcularDescuento());
+
         }
-
-
-        // Lineas del movimiento
-        // Guardamos los item
-
-
-        return null;
+        return movimientoRepository.save(movimiento);
     }
 }
