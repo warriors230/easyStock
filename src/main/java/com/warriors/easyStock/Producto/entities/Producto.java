@@ -1,18 +1,20 @@
 package com.warriors.easyStock.Producto.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.util.Date;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "producto")
+@Table(name = "productos")
 public class Producto implements Serializable {
     @Id
     @Column(name = "id_producto", nullable = false)
@@ -26,14 +28,17 @@ public class Producto implements Serializable {
 
     @Size(max = 8)
     @NotNull
+    @JsonProperty("unidad_medida")
     @Column(name = "unidad_medida", nullable = false, length = 8)
     private String unidadMedida;
 
     @NotNull
+    @JsonProperty("valor_compra")
     @Column(name = "valor_compra", nullable = false)
     private Double valorCompra;
 
     @NotNull
+    @JsonProperty("valor_venta")
     @Column(name = "valor_venta", nullable = false)
     private Double valorVenta;
 
@@ -45,11 +50,36 @@ public class Producto implements Serializable {
     private Boolean estado = false;
 
     @NotNull
+    @JsonProperty("cantidad_stock")
     @Column(name = "cantidad_stock", nullable = false)
     private Double cantidadStock;
+    @JsonProperty("fecha_creacion")
+    @Temporal(TemporalType.DATE)
+    @Column(name = "fecha_creacion")
+    private Date fechaCreacion;
 
-    public Double calcularGanancia(){
-        return  (valorVenta-valorCompra);
+    @JsonProperty("fecha_expiracion")
+    @Temporal(TemporalType.DATE)
+    @Column(name = "fecha_expiracion")
+    private Date fechaExpiracion;
+
+    @JsonProperty("fecha_modificacion")
+    @Temporal(TemporalType.DATE)
+    @Column(name = "fecha_modificacion")
+    private Date fechaModificacion;
+
+    public Double calcularGanancia() {
+        return (valorVenta - valorCompra);
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.fechaCreacion = new Date();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.fechaModificacion = new Date();
     }
 
 }

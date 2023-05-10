@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "movimiento")
+@Table(name = "movimientos")
 public class Movimiento implements Serializable {
     @Id
     @Column(name = "id_movimiento", nullable = false)

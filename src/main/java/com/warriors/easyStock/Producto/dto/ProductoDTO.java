@@ -15,4 +15,5 @@ public class ProductoDTO {
     private Double valorCompra;
     private Double valorVenta;
     private Double cantidadStock;
+    private Boolean estado;
 }
