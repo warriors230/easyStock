@@ -64,6 +64,15 @@ public class UsuarioServiceImpl implements IUsuarioService {
     }
 
     @Override
+    public Usuario buscarId(int id) {
+        Usuario usuarioBD = usuarioRepository.findById(id).orElse(null);
+        if (usuarioBD != null) {
+            return usuarioBD;
+        }
+        throw new NotFoundException("El usuario con id " + id + " " + "No existe");
+    }
+
+    @Override
     public Usuario editarUsuarios(int id, UsuarioNuevoDTO usuario) {
         Usuario usuarioBD = usuarioRepository.findById(id).orElse(null);
         if (usuarioBD != null) {

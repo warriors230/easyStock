@@ -9,6 +9,7 @@ import java.util.Optional;
 @Repository
 public interface IProductoRepository extends JpaRepository<Producto,Integer> {
     Optional<Producto> findById(int id);
+    Optional<Producto>findBySerialID(String serial);
     boolean existsByDescripcion(String descripcion);
 
 }

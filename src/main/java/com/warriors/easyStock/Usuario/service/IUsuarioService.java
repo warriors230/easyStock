@@ -10,6 +10,8 @@ public interface IUsuarioService {
     public List<Usuario> listarUsuarios();
     public Usuario crearUsuario(UsuarioNuevoDTO usuario);
 
+    public Usuario buscarId(int id);
+
     public Usuario editarUsuarios(int id, UsuarioNuevoDTO usuario);
     public Usuario eliminarUsuarios(int id);
 

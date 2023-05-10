@@ -1,5 +1,6 @@
 package com.warriors.easyStock.Movimiento.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.warriors.easyStock.Producto.entities.Producto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -20,6 +21,10 @@ public class ItemMovimiento implements Serializable {
     private int id;
     private int cantidad;
 
+    @JsonProperty("valor_item_movimiento")
+    @Column(name = "valor_item_movimiento")
+    private Double valorItemMovimiento;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_producto")
     private Producto producto;
@@ -27,5 +32,6 @@ public class ItemMovimiento implements Serializable {
     public Double calcularImporte() {
         return (double) cantidad * producto.getValorVenta();
     }
+
     private static final Long serialVersionUID = 1L;
 }

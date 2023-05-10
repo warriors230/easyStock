@@ -12,4 +12,7 @@ public interface IProductoService {
 
     public Producto editarProducto(int id, Producto producto);
     public Producto eliminarProducto(int id);
+
+    public Producto buscarId(int id);
+    public Producto buscarSerial(String serial);
 }

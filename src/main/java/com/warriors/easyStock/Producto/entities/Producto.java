@@ -21,6 +21,11 @@ public class Producto implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @NotNull
+    @JsonProperty("serial_id")
+    @Column(name = "id_producto", nullable = false, unique = true)
+    private String serialID;
+
     @Size(max = 255)
     @NotNull
     @Column(name = "descripcion", nullable = false)

@@ -58,7 +58,23 @@ public class ProductoServiceImpl implements IProductoService {
             productoRepository.deleteById(id);
             return productoBD;
         } else {
-            throw new NotFoundException("El producto con id "+id+" "+"No existe");
+            throw new NotFoundException("El producto con id " + id + " " + "No existe");
         }
+    }
+
+    @Override
+    public Producto buscarId(int id) {
+        Producto productoBD = productoRepository.findById(id).orElse(null);
+        if (productoBD != null) {
+            return productoBD;
+        } else {
+            throw new NotFoundException("El producto con id " + id + " " + "No existe");
+        }
+
+    }
+
+    @Override
+    public Producto buscarSerial(String serial) {
+        return productoRepository.findBySerialID(serial).orElse(null);
     }
 }

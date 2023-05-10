@@ -1,5 +1,6 @@
 package com.warriors.easyStock.Movimiento.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.warriors.easyStock.Usuario.entities.Usuario;
 import lombok.*;
 
@@ -30,8 +31,8 @@ public class Movimiento implements Serializable {
     private String descripcion;
 
     @Size(max = 3)
-    @Column(name = "tipo_mov")
-    private String tipoMov;
+    @Column(name = "tipo_movimiento")
+    private String tipoMovimiento;
 
     @Column(name = "id_remitente")
     private Integer idRemitente;
@@ -44,13 +45,18 @@ public class Movimiento implements Serializable {
 
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Usuario idVendedor;
+    private Usuario vendedor;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Usuario idCliente;
+    private Usuario cliente;
+
+    @JsonProperty("valor_movimiento")
+    @Column(name = "valor_movimiento")
+    private Double valorMovimiento;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "id_movimiento")
+    @JsonProperty("item_movimientos")
     private List<ItemMovimiento> itemMovimientos;
 
     public void addItemsMovimiento(ItemMovimiento item) {
@@ -63,12 +69,19 @@ public class Movimiento implements Serializable {
 
     }
 
-    public Double getTotal(){
+    public Double getTotal() {
         Double total = 0.0;
-        for (ItemMovimiento item:itemMovimientos) {
+        for (ItemMovimiento item : itemMovimientos) {
             total += item.calcularImporte();
         }
         return total;
+    }
+
+    public Double calcularDescuento() {
+        if (this.descuentoAplicado != 0) {
+            return valorMovimiento * (descuentoAplicado / 100);
+        }
+        return 0D;
     }
 
 }
