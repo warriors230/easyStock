@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"Sara Quinones\",\r\n    \"documento\":\"125654723\",\r\n    \"telefono\": \"323212312\",\r\n    \"direccion\": \"calle 70\",\r\n    \"ciudad\":\"Cali\",\r\n    \"usuario\": \"squinones\",\r\n    \"contrasena\": \"112233\",\r\n    \"estado\":true,\r\n    \"correo\":\"squinones@hotmail.com\",\r\n    \"roles\":[\"vendedor\"]\r\n}",
+							"raw": "{\r\n    \"nombre\": \"sara Quinones\",\r\n    \"documento\":\"432323432\",\r\n    \"telefono\": \"1312312313\",\r\n    \"direccion\": \"calle 78\",\r\n    \"ciudad\":\"Cali\",\r\n    \"usuario\": \"squinones\",\r\n    \"contrasena\": \"112233\",\r\n    \"estado\":true,\r\n    \"correo\":\"squinones@hotmail.com\",\r\n    \"roles\":[\"cliente\"]\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -163,11 +163,21 @@
 				{
 					"name": "crearProductos",
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{easytoken}}",
+									"type": "string"
+								}
+							]
+						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"Sebastian\",\r\n    \"documento\":\"11223344\",\r\n    \"telefono\": \"32112342123\",\r\n    \"direccion\": \"calle 70\",\r\n    \"ciudad\":\"Cali\",\r\n    \"usuario\": \"sgonzalez\",\r\n    \"contrasena\": \"112233\",\r\n    \"estado\":true,\r\n    \"correo\":\"sgonzales@hotmail.com\",\r\n    \"roles\":[\"admin\"]\r\n}",
+							"raw": "{\r\n    \"descripcion\": \"Atun Isabel\",\r\n    \"serial_id\": \"4\",\r\n    \"unidad_medida\": \"Und\",\r\n    \"valor_compra\": 6000,\r\n    \"valor_venta\": 9000,\r\n    \"estado\": true,\r\n    \"cantidad_stock\": 10,\r\n    \"fecha_expiracion\": \"2023-06-10\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -250,7 +260,170 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"nombre\": \"Esteban Lopez\",\r\n    \"documento\": \"31122232213\",\r\n    \"telefono\": \"321123423\",\r\n    \"direccion\": \"calle 70\",\r\n    \"ciudad\": \"Cali\",\r\n    \"usuario\": \"slopez\",\r\n    \"contrasena\": \"112233\",\r\n    \"correo\": \"slopez@hotmail.com\"\r\n}",
+							"raw": "{\r\n    \"descripcion\": \"Arroz Diana\",\r\n    \"unidad_medida\": \"Kg\",\r\n    \"valor_compra\": 3000,\r\n    \"valor_venta\": 5000 ,\r\n    \"estado\": true,\r\n    \"cantidad_stock\": 10,\r\n    \"fecha_expiracion\": \"2023-07-10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/easyStock/productos/actualizar/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"easyStock",
+								"productos",
+								"actualizar",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "eliminarProductos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{easytoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/easyStock/productos/eliminar/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"easyStock",
+								"productos",
+								"eliminar",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Movimiento",
+			"item": [
+				{
+					"name": "crearMovimiento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{easytoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descripcion\": \"Compra productos a Colombina\",\r\n    \"id_remitente\": 3,\r\n    \"id_destino\": 2,\r\n    \"descuento_aplicado\": 0,\r\n    \"tipo_movimiento\": \"V\",\r\n    \"item_movimientos\": [\r\n        {\r\n            \"cantidad\": 3,\r\n            \"producto\": {\r\n                \"id\": 1,\r\n                \"descripcion\": \"Arroz Carolina\",\r\n                \"ganancia\": 2000.0,\r\n                \"estado\": true,\r\n                \"serial_id\": \"1\",\r\n                \"unidad_medida\": \"Kg\",\r\n                \"valor_compra\": 3000.0,\r\n                \"valor_venta\": 5000.0,\r\n                \"cantidad_stock\": 10,\r\n                \"fecha_creacion\": \"2023-05-10\",\r\n                \"fecha_expiracion\": \"2023-06-09\",\r\n                \"fecha_modificacion\": null\r\n            }\r\n        },\r\n        {\r\n            \"cantidad\": 5,\r\n            \"producto\": {\r\n                \"id\": 2,\r\n                \"descripcion\": \"Arroz Diana\",\r\n                \"ganancia\": 2000.0,\r\n                \"estado\": true,\r\n                \"serial_id\": \"2\",\r\n                \"unidad_medida\": \"Kg\",\r\n                \"valor_compra\": 4000.0,\r\n                \"valor_venta\": 6000.0,\r\n                \"cantidad_stock\": 10,\r\n                \"fecha_creacion\": \"2023-05-10\",\r\n                \"fecha_expiracion\": \"2023-06-09\",\r\n                \"fecha_modificacion\": null\r\n            }\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/easyStock/movimiento/crear/3/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"easyStock",
+								"movimiento",
+								"crear",
+								"3",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarProductos",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{easytoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/easyStock/productos/listar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"easyStock",
+								"productos",
+								"listar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actualizarProductos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{easytoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descripcion\": \"Arroz Diana\",\r\n    \"unidad_medida\": \"Kg\",\r\n    \"valor_compra\": 3000,\r\n    \"valor_venta\": 5000 ,\r\n    \"estado\": true,\r\n    \"cantidad_stock\": 10,\r\n    \"fecha_expiracion\": \"2023-07-10\"\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
