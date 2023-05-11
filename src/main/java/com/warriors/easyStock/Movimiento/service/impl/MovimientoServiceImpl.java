@@ -93,5 +93,6 @@ public class MovimientoServiceImpl implements IMovimientoService {
         }
 
         return movimientoRepository.save(movimiento);
+        
     }
 }
