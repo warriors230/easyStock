@@ -9,7 +9,7 @@ import com.warriors.easyStock.Producto.entities.Producto;
 import com.warriors.easyStock.Producto.service.IProductoService;
 import com.warriors.easyStock.Usuario.entities.Usuario;
 import com.warriors.easyStock.Usuario.service.IUsuarioService;
-import com.warriors.easyStock.utils.ConstantesSistema;
+import com.warriors.easyStock.utils.constants.ConstantesSistema;
 import com.warriors.easyStock.utils.exceptions.ConflictException;
 import lombok.AllArgsConstructor;
 
@@ -58,8 +58,9 @@ public class MovimientoServiceImpl implements IMovimientoService {
                     lsitemMovimientos.add(item);
 
                 } else {
+                    producto = item.getProducto();
                     producto.setCantidadStock(item.getCantidad());
-                    producto.setEstado(true);
+                    producto.setEstado(false);
                     productoService.crearProducto(producto);
                     item.setValorItemMovimiento(item.calcularImporte());
                     itemMovimientoService.crearItem(item);

@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional
 @AllArgsConstructor
-public class ItemMovimientoService implements IItemMovimientoService {
+public class ItemMovimientoServiceImpl implements IItemMovimientoService {
 
     @Autowired
     IItemMovimientoRepository itemMovimientoRepository;
