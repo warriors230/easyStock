@@ -7,6 +7,7 @@ import com.warriors.easyStock.Usuario.service.IUsuarioService;
 import com.warriors.easyStock.roles.entities.Rol;
 import com.warriors.easyStock.roles.enums.RolNombre;
 import com.warriors.easyStock.roles.service.IRolService;
+import com.warriors.easyStock.utils.constants.ConstantesSistema;
 import com.warriors.easyStock.utils.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,11 +48,13 @@ public class UsuarioServiceImpl implements IUsuarioService {
     @Override
     public Usuario crearUsuario(UsuarioNuevoDTO us) {
         Usuario usuario =
-                new Usuario(us.getNombre(), us.getTelefono(), us.getDireccion(),
-                        us.getCiudad(), us.getUsuario(), passwordEncoder.encode(us.getContrasena()),
+                new Usuario(us.getNombre().toUpperCase(), us.getTelefono(), us.getDireccion().toUpperCase(),
+                        us.getCiudad().toUpperCase(), us.getUsuario(), passwordEncoder.encode(us.getContrasena()),
                         us.getEstado(), us.getCorreo(), us.getDocumento());
         Set<Rol> roles = new HashSet<>();
         roles.add(rolService.getByRolNombre(RolNombre.ROLE_USUARIO).get());
+        if(us.getRoles().contains("supremo"))
+            roles.add(rolService.getByRolNombre(RolNombre.ROLE_SUPREMO).get());
         if (us.getRoles().contains("admin"))
             roles.add(rolService.getByRolNombre(RolNombre.ROLE_ADMIN).get());
         if (us.getRoles().contains("vendedor"))
@@ -122,5 +125,6 @@ public class UsuarioServiceImpl implements IUsuarioService {
     public boolean existsByUsuario(String usuario) {
         return usuarioRepository.existsByUsuario(usuario);
     }
+
 
 }

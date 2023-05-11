@@ -36,19 +36,19 @@ public class UsuarioController {
         return ResponseEntity.ok().body(usuarioService.crearUsuario(usuario));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SUPREMO')")
     @GetMapping("/listar")
     public ResponseEntity<List<Usuario>> listarUsuarios() {
         return ResponseEntity.ok().body(usuarioService.listarUsuarios());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SUPREMO')")
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<?> actualizarUsuario(@PathVariable Integer id, @RequestBody UsuarioNuevoDTO usuario) {
         return ResponseEntity.ok().body(usuarioService.editarUsuarios(id, usuario));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SUPREMO')")
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarUsuario(@PathVariable int id) {
         Usuario usuarioBD = usuarioService.eliminarUsuarios(id);

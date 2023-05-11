@@ -38,9 +38,10 @@ public class MovimientoServiceImpl implements IMovimientoService {
 
 
     @Override
-    public Movimiento guardarMovimiento(Movimiento movimiento, int codigoCliente, int codigoVendedor) {
-        Usuario cliente = usuarioService.buscarId(codigoCliente);
+    public Movimiento guardarMovimiento(Movimiento movimiento, int codigoVendedor, int codigoCliente) {
         Usuario vendedor = usuarioService.buscarId(codigoVendedor);
+        Usuario cliente = usuarioService.buscarId(codigoCliente);
+
         List<ItemMovimiento> lsitemMovimientos = new ArrayList<>();
 
         Producto producto;
@@ -51,24 +52,22 @@ public class MovimientoServiceImpl implements IMovimientoService {
             for (ItemMovimiento item : movimiento.getItemMovimientos()) {
                 producto = productoService.buscarSerial(item.getProducto().getSerialID());
                 if (producto != null) {
+                    item.setProductoCantidadAnterior(item.getProducto().getCantidadStock());
+                    item.setProductoCantidadActual(item.getProducto().getCantidadStock() + item.getCantidad());
                     producto.setCantidadStock(producto.getCantidadStock() + item.getCantidad());
                     productoService.editarProducto(producto.getId(), producto);
-                    item.setValorItemMovimiento(item.calcularImporte());
-                    itemMovimientoService.crearItem(item);
-                    lsitemMovimientos.add(item);
-
                 } else {
                     producto = item.getProducto();
                     producto.setCantidadStock(item.getCantidad());
                     producto.setEstado(false);
                     productoService.crearProducto(producto);
-                    item.setValorItemMovimiento(item.calcularImporte());
-                    itemMovimientoService.crearItem(item);
-                    lsitemMovimientos.add(item);
                 }
+                item.setValorItemMovimiento(item.calcularImporteCompra());
+                itemMovimientoService.crearItem(item);
+                lsitemMovimientos.add(item);
             }
             movimiento.setItemMovimientos(lsitemMovimientos);
-            movimiento.setValorMovimiento(movimiento.getTotal() - movimiento.calcularDescuento());
+            movimiento.setValorMovimiento(movimiento.getTotalCompra() - movimiento.calcularDescuento());
 
         } else {
             for (ItemMovimiento item : movimiento.getItemMovimientos()) {
@@ -76,17 +75,19 @@ public class MovimientoServiceImpl implements IMovimientoService {
                 if (producto.getCantidadStock() == 0) {
                     throw new ConflictException("No tiene cantidad disponible en el inventario para realizar la venta");
                 } else if (producto.getCantidadStock() - item.getCantidad() < 0) {
-                    throw new ConflictException("La cantidad solicitada sobrepasa la cantidad en el inventario. Posee " + producto.getCantidadStock() + " cantidades en el inventario");
+                    throw new ConflictException("La cantidad solicitada sobrepasa la cantidad en el inventario. Posee " + producto.getCantidadStock()
+                            + " cantidades de " + producto.getDescripcion() + " en el inventario");
                 }
-
+                item.setProductoCantidadAnterior(item.getProducto().getCantidadStock());
+                item.setProductoCantidadActual(producto.getCantidadStock() - item.getCantidad());
+                item.setValorItemMovimiento(item.calcularImporteVenta());
                 producto.setCantidadStock(producto.getCantidadStock() - item.getCantidad());
                 productoService.editarProducto(producto.getId(), producto);
-                item.setValorItemMovimiento(item.calcularImporte());
                 itemMovimientoService.crearItem(item);
                 lsitemMovimientos.add(item);
             }
             movimiento.setItemMovimientos(lsitemMovimientos);
-            movimiento.setValorMovimiento(movimiento.getTotal() - movimiento.calcularDescuento());
+            movimiento.setValorMovimiento(movimiento.getTotalVenta() - movimiento.calcularDescuento());
 
         }
         return movimientoRepository.save(movimiento);

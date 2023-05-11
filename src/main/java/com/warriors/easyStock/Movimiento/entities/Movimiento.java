@@ -70,10 +70,17 @@ public class Movimiento implements Serializable {
 
     }
 
-    public Double getTotal() {
+    public Double getTotalVenta() {
         Double total = 0.0;
         for (ItemMovimiento item : itemMovimientos) {
-            total += item.calcularImporte();
+            total += item.calcularImporteVenta();
+        }
+        return total;
+    }
+    public Double getTotalCompra() {
+        Double total = 0.0;
+        for (ItemMovimiento item : itemMovimientos) {
+            total += item.calcularImporteCompra();
         }
         return total;
     }

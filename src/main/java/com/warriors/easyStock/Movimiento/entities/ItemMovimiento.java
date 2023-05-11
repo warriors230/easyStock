@@ -29,8 +29,19 @@ public class ItemMovimiento implements Serializable {
     @JoinColumn(name = "id_producto")
     private Producto producto;
 
-    public Double calcularImporte() {
+    @JsonProperty("producto_cantidad_anterior")
+    @Column(name = "producto_cantidad_anterior")
+    private int productoCantidadAnterior;
+
+    @JsonProperty("producto_cantidad_actual")
+    @Column(name = "producto_cantidad_actual")
+    private int productoCantidadActual;
+
+    public Double calcularImporteVenta() {
         return (double) cantidad * producto.getValorVenta();
+    }
+    public Double calcularImporteCompra() {
+        return (double) cantidad * producto.getValorCompra();
     }
 
     private static final Long serialVersionUID = 1L;

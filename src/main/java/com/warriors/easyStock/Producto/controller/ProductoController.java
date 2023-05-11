@@ -29,19 +29,19 @@ public class ProductoController {
         return ResponseEntity.ok().body(productoService.crearProducto(producto));
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_VENDEDOR')")
+    @PreAuthorize("hasAnyRole('ROLE_SUPREMO','ROLE_ADMIN','ROLE_VENDEDOR')")
     @GetMapping("/listar")
     public ResponseEntity<List<Producto>> listarProductos() {
         return ResponseEntity.ok().body(productoService.listarProductos());
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SUPREMO')")
     @PutMapping("/actualizar/{id}")
     public ResponseEntity<?> actualizarUsuario(@PathVariable Integer id, @RequestBody Producto producto) {
         return ResponseEntity.ok().body(productoService.editarProducto(id, producto));
     }
 
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SUPREMO')")
     @DeleteMapping("/eliminar/{id}")
     public ResponseEntity<?> eliminarUsuario(@PathVariable int id) {
         Producto productoBD = productoService.eliminarProducto(id);

@@ -20,4 +20,6 @@ public interface IUsuarioService {
     boolean existsByCorreo(String correo);
     boolean existsByUsuario(String usuario);
 
+
+
 }
