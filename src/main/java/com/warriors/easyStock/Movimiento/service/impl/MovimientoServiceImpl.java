@@ -67,7 +67,8 @@ public class MovimientoServiceImpl implements IMovimientoService {
                 lsitemMovimientos.add(item);
             }
             movimiento.setItemMovimientos(lsitemMovimientos);
-            movimiento.setValorMovimiento(movimiento.getTotalCompra() - movimiento.calcularDescuento());
+            movimiento.setValorMovimiento(movimiento.getTotalCompra());
+            movimiento.setValorMovimiento(movimiento.getValorMovimiento() - movimiento.calcularDescuento());
 
         } else {
             for (ItemMovimiento item : movimiento.getItemMovimientos()) {
@@ -87,9 +88,10 @@ public class MovimientoServiceImpl implements IMovimientoService {
                 lsitemMovimientos.add(item);
             }
             movimiento.setItemMovimientos(lsitemMovimientos);
-            movimiento.setValorMovimiento(movimiento.getTotalVenta() - movimiento.calcularDescuento());
-
+            movimiento.setValorMovimiento(movimiento.getTotalVenta());
+            movimiento.setValorMovimiento(movimiento.getValorMovimiento() - movimiento.calcularDescuento());
         }
+
         return movimientoRepository.save(movimiento);
     }
 }
