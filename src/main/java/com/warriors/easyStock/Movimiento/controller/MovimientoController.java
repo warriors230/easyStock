@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/movimiento")
@@ -22,5 +24,10 @@ public class MovimientoController {
                                                                 @PathVariable int codCliente) {
         return ResponseEntity.ok().body(movimientoService.guardarMovimiento(movimiento, codVendedor, codCliente));
 
+    }
+    @PreAuthorize("hasAnyRole('ROLE_SUPREMO','ROLE_ADMIN')")
+    @GetMapping("/listar")
+    public ResponseEntity<List<MovimientoRespnseDTO>>listarMovimientos(){
+        return ResponseEntity.ok().body(movimientoService.listarMovimientos());
     }
 }

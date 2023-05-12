@@ -1,5 +1,6 @@
 package com.warriors.easyStock.Movimiento.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.warriors.easyStock.Usuario.entities.Usuario;
 import lombok.*;

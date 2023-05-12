@@ -13,6 +13,7 @@ import com.warriors.easyStock.Usuario.entities.Usuario;
 import com.warriors.easyStock.Usuario.service.IUsuarioService;
 import com.warriors.easyStock.utils.constants.ConstantesSistema;
 import com.warriors.easyStock.utils.exceptions.ConflictException;
+import com.warriors.easyStock.utils.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -131,5 +133,44 @@ public class MovimientoServiceImpl implements IMovimientoService {
                 .idDestino(movimientoGuardado.getIdDestino())
                 .build();
 
+    }
+
+    @Override
+    public List<MovimientoRespnseDTO> listarMovimientos() {
+        List<Movimiento> lsMovimientos = movimientoRepository.findAll();
+        List<MovimientoRespnseDTO> lsMovimientoRespnseDTOS =
+                lsMovimientos.stream().map(e -> {
+                    MovimientoRespnseDTO movimientoRespnseDTO = MovimientoRespnseDTO.builder().
+                            id(e.getId())
+                            .descripcion(e.getDescripcion())
+                            .valorMovimiento(e.getValorMovimiento())
+                            .fechaMovimiento(e.getFechaMovimiento())
+                            .tipoMovimiento(e.getTipoMovimiento())
+                            .itemMovimientos(e.getItemMovimientos())
+                            .vendedor(UsuarioResponseDTO.builder().nombre(e.getVendedor().getNombre())
+                                    .documento(e.getVendedor().getDocumento())
+                                    .telefono(e.getVendedor().getTelefono())
+                                    .direccion(e.getVendedor().getDireccion())
+                                    .ciudad(e.getVendedor().getCiudad())
+                                    .estado(e.getVendedor().getEstado())
+                                    .build())
+                            .cliente(UsuarioResponseDTO.builder().nombre(e.getCliente().getNombre())
+                                    .documento(e.getCliente().getDocumento())
+                                    .telefono(e.getCliente().getTelefono())
+                                    .direccion(e.getCliente().getDireccion())
+                                    .ciudad(e.getCliente().getCiudad())
+                                    .estado(e.getCliente().getEstado())
+                                    .build())
+                            .idRemitente(e.getIdRemitente())
+                            .idDestino(e.getIdDestino())
+                            .descuentoAplicado(e.getDescuentoAplicado())
+                            .build();
+                    return movimientoRespnseDTO;
+                }).collect(Collectors.toList());
+
+        if(lsMovimientoRespnseDTOS.isEmpty()){
+            throw new NotFoundException("No hay movimientos registrados en el sistema");
+        }
+        return lsMovimientoRespnseDTOS;
     }
 }

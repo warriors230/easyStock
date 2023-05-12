@@ -1,5 +1,6 @@
 package com.warriors.easyStock.Movimiento.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.warriors.easyStock.Producto.entities.Producto;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ public class ItemMovimiento implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_producto")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     private Producto producto;
 
     @JsonProperty("producto_cantidad_anterior")
