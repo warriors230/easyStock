@@ -60,6 +60,21 @@ public class Movimiento implements Serializable {
     @JsonProperty("item_movimientos")
     private List<ItemMovimiento> itemMovimientos;
 
+    public Movimiento(Date fechaMovimiento, String descripcion, String tipoMovimiento, Integer idRemitente, Integer idDestino,
+                      Double descuentoAplicado, Usuario vendedor, Usuario cliente,
+                      Double valorMovimiento, List<ItemMovimiento> itemMovimientos) {
+        this.fechaMovimiento = fechaMovimiento;
+        this.descripcion = descripcion;
+        this.tipoMovimiento = tipoMovimiento;
+        this.idRemitente = idRemitente;
+        this.idDestino = idDestino;
+        this.descuentoAplicado = descuentoAplicado;
+        this.vendedor = vendedor;
+        this.cliente = cliente;
+        this.valorMovimiento = valorMovimiento;
+        this.itemMovimientos = itemMovimientos;
+    }
+
     public void addItemsMovimiento(ItemMovimiento item) {
         this.itemMovimientos.add(item);
     }
@@ -77,6 +92,7 @@ public class Movimiento implements Serializable {
         }
         return total;
     }
+
     public Double getTotalCompra() {
         Double total = 0.0;
         for (ItemMovimiento item : itemMovimientos) {
@@ -91,5 +107,6 @@ public class Movimiento implements Serializable {
         }
         return 0D;
     }
+
 
 }

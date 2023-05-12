@@ -1,5 +1,6 @@
 package com.warriors.easyStock.Movimiento.service.impl;
 
+import com.warriors.easyStock.Movimiento.dto.MovimientoRespnseDTO;
 import com.warriors.easyStock.Movimiento.entities.ItemMovimiento;
 import com.warriors.easyStock.Movimiento.entities.Movimiento;
 import com.warriors.easyStock.Movimiento.repository.IMovimientoRepository;
@@ -7,6 +8,7 @@ import com.warriors.easyStock.Movimiento.service.IItemMovimientoService;
 import com.warriors.easyStock.Movimiento.service.IMovimientoService;
 import com.warriors.easyStock.Producto.entities.Producto;
 import com.warriors.easyStock.Producto.service.IProductoService;
+import com.warriors.easyStock.Usuario.dto.UsuarioResponseDTO;
 import com.warriors.easyStock.Usuario.entities.Usuario;
 import com.warriors.easyStock.Usuario.service.IUsuarioService;
 import com.warriors.easyStock.utils.constants.ConstantesSistema;
@@ -38,9 +40,31 @@ public class MovimientoServiceImpl implements IMovimientoService {
 
 
     @Override
-    public Movimiento guardarMovimiento(Movimiento movimiento, int codigoVendedor, int codigoCliente) {
+    public MovimientoRespnseDTO guardarMovimiento(Movimiento movimiento, int codigoVendedor, int codigoCliente) {
         Usuario vendedor = usuarioService.buscarId(codigoVendedor);
+
         Usuario cliente = usuarioService.buscarId(codigoCliente);
+
+        UsuarioResponseDTO vendedordto = UsuarioResponseDTO
+                .builder()
+                .nombre(vendedor.getNombre())
+                .documento(vendedor.getDocumento())
+                .telefono(vendedor.getTelefono())
+                .direccion(vendedor.getDireccion())
+                .ciudad(vendedor.getCiudad())
+                .estado(vendedor.getEstado())
+                .build();
+
+        UsuarioResponseDTO clientedto = UsuarioResponseDTO
+                .builder()
+                .nombre(cliente.getNombre())
+                .documento(cliente.getDocumento())
+                .telefono(cliente.getTelefono())
+                .direccion(cliente.getDireccion())
+                .ciudad(cliente.getCiudad())
+                .estado(cliente.getEstado())
+                .build();
+
 
         List<ItemMovimiento> lsitemMovimientos = new ArrayList<>();
 
@@ -91,8 +115,21 @@ public class MovimientoServiceImpl implements IMovimientoService {
             movimiento.setValorMovimiento(movimiento.getTotalVenta());
             movimiento.setValorMovimiento(movimiento.getValorMovimiento() - movimiento.calcularDescuento());
         }
+        Movimiento movimientoGuardado = movimientoRepository.save(movimiento);
 
-        return movimientoRepository.save(movimiento);
-        
+        return MovimientoRespnseDTO.builder()
+                .id(movimientoGuardado.getId())
+                .descripcion(movimientoGuardado.getDescripcion())
+                .tipoMovimiento(movimientoGuardado.getTipoMovimiento())
+                .valorMovimiento(movimientoGuardado.getValorMovimiento())
+                .descuentoAplicado(movimientoGuardado.getDescuentoAplicado())
+                .vendedor(vendedordto)
+                .cliente(clientedto)
+                .itemMovimientos(movimientoGuardado.getItemMovimientos())
+                .fechaMovimiento(movimientoGuardado.getFechaMovimiento())
+                .idRemitente(movimientoGuardado.getIdRemitente())
+                .idDestino(movimientoGuardado.getIdDestino())
+                .build();
+
     }
 }

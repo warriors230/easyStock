@@ -1,5 +1,6 @@
 package com.warriors.easyStock.Movimiento.controller;
 
+import com.warriors.easyStock.Movimiento.dto.MovimientoRespnseDTO;
 import com.warriors.easyStock.Movimiento.entities.Movimiento;
 import com.warriors.easyStock.Movimiento.service.IMovimientoService;
 import lombok.AllArgsConstructor;
@@ -16,9 +17,9 @@ public class MovimientoController {
     IMovimientoService movimientoService;
     @PreAuthorize("hasAnyRole('ROLE_SUPREMO','ROLE_ADMIN','ROLE_VENDEDOR')")
     @PostMapping("/crear/{codVendedor}/{codCliente}")
-    public ResponseEntity<?> crearMovimiento(@RequestBody Movimiento movimiento,
-                                             @PathVariable int codVendedor,
-                                             @PathVariable int codCliente) {
+    public ResponseEntity<MovimientoRespnseDTO> crearMovimiento(@RequestBody Movimiento movimiento,
+                                                                @PathVariable int codVendedor,
+                                                                @PathVariable int codCliente) {
         return ResponseEntity.ok().body(movimientoService.guardarMovimiento(movimiento, codVendedor, codCliente));
 
     }
