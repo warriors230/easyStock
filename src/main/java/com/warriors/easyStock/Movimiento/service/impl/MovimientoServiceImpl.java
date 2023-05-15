@@ -42,6 +42,7 @@ public class MovimientoServiceImpl implements IMovimientoService {
 
 
     @Override
+    @Transactional(rollbackFor = {ConflictException.class, NullPointerException.class})
     public MovimientoRespnseDTO guardarMovimiento(Movimiento movimiento, int codigoVendedor, int codigoCliente) {
         Usuario vendedor = usuarioService.buscarId(codigoVendedor);
 
@@ -131,6 +132,9 @@ public class MovimientoServiceImpl implements IMovimientoService {
                 .fechaMovimiento(movimientoGuardado.getFechaMovimiento())
                 .idRemitente(movimientoGuardado.getIdRemitente())
                 .idDestino(movimientoGuardado.getIdDestino())
+                .estado(movimiento.getEstado())
+                .cambio(movimiento.getCambio())
+                .pendiente(movimiento.getPendiente())
                 .build();
 
     }
@@ -168,7 +172,7 @@ public class MovimientoServiceImpl implements IMovimientoService {
                     return movimientoRespnseDTO;
                 }).collect(Collectors.toList());
 
-        if(lsMovimientoRespnseDTOS.isEmpty()){
+        if (lsMovimientoRespnseDTOS.isEmpty()) {
             throw new NotFoundException("No hay movimientos registrados en el sistema");
         }
         return lsMovimientoRespnseDTOS;

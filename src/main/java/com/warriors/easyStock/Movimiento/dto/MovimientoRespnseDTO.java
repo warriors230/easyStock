@@ -32,4 +32,8 @@ public class MovimientoRespnseDTO {
     Double valorMovimiento;
     @JsonProperty("item_movimientos")
     List<ItemMovimiento> itemMovimientos;
+
+    double cambio;
+    double pendiente;
+    String estado;
 }

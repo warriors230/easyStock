@@ -1,8 +1,9 @@
 package com.warriors.easyStock.Movimiento.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.warriors.easyStock.Usuario.entities.Usuario;
+import com.warriors.easyStock.utils.constants.ConstantesSistema;
 import lombok.*;
 
 import javax.persistence.*;
@@ -23,13 +24,14 @@ public class Movimiento implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "fecha_movimiento")
-    private Date fechaMovimiento;
-
     @Size(max = 255)
     @Column(name = "descripcion")
     private String descripcion;
+    @Column(name = "valor_pagado")
+    @JsonProperty("valor_pagado")
+    private Double valorPagado;
+    private Double pendiente;
+    private Double cambio;
 
     @Size(max = 3)
     @JsonProperty("tipo_movimiento")
@@ -44,7 +46,9 @@ public class Movimiento implements Serializable {
     @JsonProperty("descuento_aplicado")
     @Column(name = "descuento_aplicado")
     private Double descuentoAplicado;
-
+    @Size(max = 3)
+    @Column(name = "estado")
+    private String estado;
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Usuario vendedor;
@@ -61,10 +65,18 @@ public class Movimiento implements Serializable {
     @JsonProperty("item_movimientos")
     private List<ItemMovimiento> itemMovimientos;
 
-    public Movimiento(Date fechaMovimiento, String descripcion, String tipoMovimiento, Integer idRemitente, Integer idDestino,
-                      Double descuentoAplicado, Usuario vendedor, Usuario cliente,
-                      Double valorMovimiento, List<ItemMovimiento> itemMovimientos) {
-        this.fechaMovimiento = fechaMovimiento;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "fecha_movimiento")
+    private Date fechaMovimiento;
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "fecha_modificacion")
+    private Date fechaModificacion;
+
+    public Movimiento(String descripcion, String tipoMovimiento, Integer idRemitente,
+                      Integer idDestino, Double descuentoAplicado, Usuario vendedor,
+                      Usuario cliente, Double valorMovimiento, List<ItemMovimiento> itemMovimientos,
+                      Double valorPagado, String estado) {
         this.descripcion = descripcion;
         this.tipoMovimiento = tipoMovimiento;
         this.idRemitente = idRemitente;
@@ -74,6 +86,8 @@ public class Movimiento implements Serializable {
         this.cliente = cliente;
         this.valorMovimiento = valorMovimiento;
         this.itemMovimientos = itemMovimientos;
+        this.valorPagado = valorPagado;
+        this.estado = estado;
     }
 
     public void addItemsMovimiento(ItemMovimiento item) {
@@ -81,8 +95,20 @@ public class Movimiento implements Serializable {
     }
 
     @PrePersist
-    public void Prepersist() {
+    public void prePersist() {
         this.fechaMovimiento = new Date();
+        this.estado = ((valorMovimiento - valorPagado) <= 0D) ? ConstantesSistema.MOVIMIENTO_ESTADO_PAGADO : ConstantesSistema.MOVIMIENTO_ESTADO_ACTIVO;
+        this.pendiente = (valorPagado - valorMovimiento) < 0 ? (valorPagado - valorMovimiento) * -1 : 0;
+        this.cambio = (valorPagado - valorMovimiento) > 0 ? (valorPagado - valorMovimiento) : 0;
+
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.fechaModificacion = new Date();
+        this.estado = ((valorPagado - pendiente) >= 0D) ? ConstantesSistema.MOVIMIENTO_ESTADO_PAGADO : ConstantesSistema.MOVIMIENTO_ESTADO_ACTIVO;
+        this.pendiente = (valorPagado - pendiente) < 0 ? (valorPagado - pendiente) * -1 : 0;
+        this.cambio = (valorPagado - pendiente) > 0 ? (valorPagado - pendiente) : 0;
 
     }
 
