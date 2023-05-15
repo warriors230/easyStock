@@ -42,100 +42,107 @@ public class MovimientoServiceImpl implements IMovimientoService {
 
 
     @Override
-    @Transactional(rollbackFor = {ConflictException.class, NullPointerException.class})
+    @Transactional(rollbackFor = {ConflictException.class, RuntimeException.class})
     public MovimientoRespnseDTO guardarMovimiento(Movimiento movimiento, int codigoVendedor, int codigoCliente) {
-        Usuario vendedor = usuarioService.buscarId(codigoVendedor);
 
-        Usuario cliente = usuarioService.buscarId(codigoCliente);
+        try {
+            Usuario vendedor = usuarioService.buscarId(codigoVendedor);
 
-        UsuarioResponseDTO vendedordto = UsuarioResponseDTO
-                .builder()
-                .nombre(vendedor.getNombre())
-                .documento(vendedor.getDocumento())
-                .telefono(vendedor.getTelefono())
-                .direccion(vendedor.getDireccion())
-                .ciudad(vendedor.getCiudad())
-                .estado(vendedor.getEstado())
-                .build();
+            Usuario cliente = usuarioService.buscarId(codigoCliente);
 
-        UsuarioResponseDTO clientedto = UsuarioResponseDTO
-                .builder()
-                .nombre(cliente.getNombre())
-                .documento(cliente.getDocumento())
-                .telefono(cliente.getTelefono())
-                .direccion(cliente.getDireccion())
-                .ciudad(cliente.getCiudad())
-                .estado(cliente.getEstado())
-                .build();
+            UsuarioResponseDTO vendedordto = UsuarioResponseDTO
+                    .builder()
+                    .nombre(vendedor.getNombre())
+                    .documento(vendedor.getDocumento())
+                    .telefono(vendedor.getTelefono())
+                    .direccion(vendedor.getDireccion())
+                    .ciudad(vendedor.getCiudad())
+                    .estado(vendedor.getEstado())
+                    .build();
+
+            UsuarioResponseDTO clientedto = UsuarioResponseDTO
+                    .builder()
+                    .nombre(cliente.getNombre())
+                    .documento(cliente.getDocumento())
+                    .telefono(cliente.getTelefono())
+                    .direccion(cliente.getDireccion())
+                    .ciudad(cliente.getCiudad())
+                    .estado(cliente.getEstado())
+                    .build();
 
 
-        List<ItemMovimiento> lsitemMovimientos = new ArrayList<>();
+            List<ItemMovimiento> lsitemMovimientos = new ArrayList<>();
 
-        Producto producto;
-        movimiento.setCliente(cliente);
-        movimiento.setVendedor(vendedor);
+            Producto producto;
+            movimiento.setCliente(cliente);
+            movimiento.setVendedor(vendedor);
 
-        if (movimiento.getTipoMovimiento().equals(ConstantesSistema.MOVIMIENTO_COMPRA)) {
-            for (ItemMovimiento item : movimiento.getItemMovimientos()) {
-                producto = productoService.buscarSerial(item.getProducto().getSerialID());
-                if (producto != null) {
+            if (movimiento.getTipoMovimiento().equals(ConstantesSistema.MOVIMIENTO_COMPRA)) {
+                for (ItemMovimiento item : movimiento.getItemMovimientos()) {
+                    producto = productoService.buscarSerial(item.getProducto().getSerialID());
+                    if (producto != null) {
+                        item.setProductoCantidadAnterior(item.getProducto().getCantidadStock());
+                        item.setProductoCantidadActual(item.getProducto().getCantidadStock() + item.getCantidad());
+                        producto.setCantidadStock(producto.getCantidadStock() + item.getCantidad());
+                        productoService.editarProducto(producto.getId(), producto);
+                    } else {
+                        producto = item.getProducto();
+                        producto.setCantidadStock(item.getCantidad());
+                        producto.setEstado(false);
+                        productoService.crearProducto(producto);
+                    }
+                    item.setValorItemMovimiento(item.calcularImporteCompra());
+                    itemMovimientoService.crearItem(item);
+                    lsitemMovimientos.add(item);
+                }
+                movimiento.setItemMovimientos(lsitemMovimientos);
+                movimiento.setValorMovimiento(movimiento.getTotalCompra());
+                movimiento.setValorMovimiento(movimiento.getValorMovimiento() - movimiento.calcularDescuento());
+
+            } else {
+                for (ItemMovimiento item : movimiento.getItemMovimientos()) {
+                    producto = productoService.buscarId(item.getProducto().getId());
+                    if (producto.getCantidadStock() == 0) {
+                        throw new ConflictException("No tiene cantidad disponible en el inventario para realizar la venta");
+                    } else if (producto.getCantidadStock() - item.getCantidad() < 0) {
+                        throw new ConflictException("La cantidad solicitada sobrepasa la cantidad en el inventario. Posee " + producto.getCantidadStock()
+                                + " cantidades de " + producto.getDescripcion() + " en el inventario");
+                    }
                     item.setProductoCantidadAnterior(item.getProducto().getCantidadStock());
-                    item.setProductoCantidadActual(item.getProducto().getCantidadStock() + item.getCantidad());
-                    producto.setCantidadStock(producto.getCantidadStock() + item.getCantidad());
+                    item.setProductoCantidadActual(producto.getCantidadStock() - item.getCantidad());
+                    item.setValorItemMovimiento(item.calcularImporteVenta());
+                    producto.setCantidadStock(producto.getCantidadStock() - item.getCantidad());
                     productoService.editarProducto(producto.getId(), producto);
-                } else {
-                    producto = item.getProducto();
-                    producto.setCantidadStock(item.getCantidad());
-                    producto.setEstado(false);
-                    productoService.crearProducto(producto);
+                    itemMovimientoService.crearItem(item);
+                    lsitemMovimientos.add(item);
                 }
-                item.setValorItemMovimiento(item.calcularImporteCompra());
-                itemMovimientoService.crearItem(item);
-                lsitemMovimientos.add(item);
+                movimiento.setItemMovimientos(lsitemMovimientos);
+                movimiento.setValorMovimiento(movimiento.getTotalVenta());
+                movimiento.setValorMovimiento(movimiento.getValorMovimiento() - movimiento.calcularDescuento());
             }
-            movimiento.setItemMovimientos(lsitemMovimientos);
-            movimiento.setValorMovimiento(movimiento.getTotalCompra());
-            movimiento.setValorMovimiento(movimiento.getValorMovimiento() - movimiento.calcularDescuento());
+            Movimiento movimientoGuardado = movimientoRepository.save(movimiento);
 
-        } else {
-            for (ItemMovimiento item : movimiento.getItemMovimientos()) {
-                producto = productoService.buscarId(item.getProducto().getId());
-                if (producto.getCantidadStock() == 0) {
-                    throw new ConflictException("No tiene cantidad disponible en el inventario para realizar la venta");
-                } else if (producto.getCantidadStock() - item.getCantidad() < 0) {
-                    throw new ConflictException("La cantidad solicitada sobrepasa la cantidad en el inventario. Posee " + producto.getCantidadStock()
-                            + " cantidades de " + producto.getDescripcion() + " en el inventario");
-                }
-                item.setProductoCantidadAnterior(item.getProducto().getCantidadStock());
-                item.setProductoCantidadActual(producto.getCantidadStock() - item.getCantidad());
-                item.setValorItemMovimiento(item.calcularImporteVenta());
-                producto.setCantidadStock(producto.getCantidadStock() - item.getCantidad());
-                productoService.editarProducto(producto.getId(), producto);
-                itemMovimientoService.crearItem(item);
-                lsitemMovimientos.add(item);
-            }
-            movimiento.setItemMovimientos(lsitemMovimientos);
-            movimiento.setValorMovimiento(movimiento.getTotalVenta());
-            movimiento.setValorMovimiento(movimiento.getValorMovimiento() - movimiento.calcularDescuento());
+            return MovimientoRespnseDTO.builder()
+                    .id(movimientoGuardado.getId())
+                    .descripcion(movimientoGuardado.getDescripcion())
+                    .tipoMovimiento(movimientoGuardado.getTipoMovimiento())
+                    .valorMovimiento(movimientoGuardado.getValorMovimiento())
+                    .descuentoAplicado(movimientoGuardado.getDescuentoAplicado())
+                    .vendedor(vendedordto)
+                    .cliente(clientedto)
+                    .itemMovimientos(movimientoGuardado.getItemMovimientos())
+                    .fechaMovimiento(movimientoGuardado.getFechaMovimiento())
+                    .idRemitente(movimientoGuardado.getIdRemitente())
+                    .idDestino(movimientoGuardado.getIdDestino())
+                    .estado(movimiento.getEstado())
+                    .cambio(movimiento.getCambio())
+                    .pendiente(movimiento.getPendiente())
+                    .build();
+
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
         }
-        Movimiento movimientoGuardado = movimientoRepository.save(movimiento);
 
-        return MovimientoRespnseDTO.builder()
-                .id(movimientoGuardado.getId())
-                .descripcion(movimientoGuardado.getDescripcion())
-                .tipoMovimiento(movimientoGuardado.getTipoMovimiento())
-                .valorMovimiento(movimientoGuardado.getValorMovimiento())
-                .descuentoAplicado(movimientoGuardado.getDescuentoAplicado())
-                .vendedor(vendedordto)
-                .cliente(clientedto)
-                .itemMovimientos(movimientoGuardado.getItemMovimientos())
-                .fechaMovimiento(movimientoGuardado.getFechaMovimiento())
-                .idRemitente(movimientoGuardado.getIdRemitente())
-                .idDestino(movimientoGuardado.getIdDestino())
-                .estado(movimiento.getEstado())
-                .cambio(movimiento.getCambio())
-                .pendiente(movimiento.getPendiente())
-                .build();
 
     }
 
@@ -168,6 +175,9 @@ public class MovimientoServiceImpl implements IMovimientoService {
                             .idRemitente(e.getIdRemitente())
                             .idDestino(e.getIdDestino())
                             .descuentoAplicado(e.getDescuentoAplicado())
+                            .estado(e.getEstado())
+                            .pendiente(e.getPendiente())
+                            .cambio(e.getCambio())
                             .build();
                     return movimientoRespnseDTO;
                 }).collect(Collectors.toList());
