@@ -21,7 +21,7 @@ public class MovimientoController {
     @PostMapping("/crear/{codVendedor}/{codCliente}")
     public ResponseEntity<MovimientoRespnseDTO> crearMovimiento(@RequestBody Movimiento movimiento,
                                                                 @PathVariable int codVendedor,
-                                                                @PathVariable int codCliente) {
+                                                                @PathVariable int codCliente)  {
         return ResponseEntity.ok().body(movimientoService.guardarMovimiento(movimiento, codVendedor, codCliente));
 
     }

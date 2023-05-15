@@ -12,6 +12,7 @@ import com.warriors.easyStock.Usuario.dto.UsuarioResponseDTO;
 import com.warriors.easyStock.Usuario.entities.Usuario;
 import com.warriors.easyStock.Usuario.service.IUsuarioService;
 import com.warriors.easyStock.utils.constants.ConstantesSistema;
+import com.warriors.easyStock.utils.exceptions.BadRequestException;
 import com.warriors.easyStock.utils.exceptions.ConflictException;
 import com.warriors.easyStock.utils.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
@@ -140,7 +141,7 @@ public class MovimientoServiceImpl implements IMovimientoService {
                     .build();
 
         } catch (Exception e) {
-            throw new RuntimeException(e.getMessage());
+            throw new BadRequestException(e.getMessage());
         }
 
 
@@ -156,7 +157,7 @@ public class MovimientoServiceImpl implements IMovimientoService {
                             .descripcion(e.getDescripcion())
                             .valorMovimiento(e.getValorMovimiento())
                             .fechaMovimiento(e.getFechaMovimiento())
-                            .tipoMovimiento(e.getTipoMovimiento())
+                            .tipoMovimiento(e.getTipoMovimiento().equals(ConstantesSistema.MOVIMIENTO_VENTA) ? "VENTA" : "COMPRA")
                             .itemMovimientos(e.getItemMovimientos())
                             .vendedor(UsuarioResponseDTO.builder().nombre(e.getVendedor().getNombre())
                                     .documento(e.getVendedor().getDocumento())
@@ -186,5 +187,52 @@ public class MovimientoServiceImpl implements IMovimientoService {
             throw new NotFoundException("No hay movimientos registrados en el sistema");
         }
         return lsMovimientoRespnseDTOS;
+    }
+
+    @Override
+    public MovimientoRespnseDTO anularMovimiento(int idMovimiento) {
+        try {
+            Movimiento movimientoBD = movimientoRepository.findById(idMovimiento).orElse(null);
+            if (movimientoBD != null) {
+                for (ItemMovimiento items : movimientoBD.getItemMovimientos()) {
+                    Producto producto = productoService.buscarId(items.getProducto().getId());
+                    producto.setCantidadStock(producto.getCantidadStock() + items.getCantidad());
+                    productoService.editarProducto(producto.getId(), producto);
+                }
+                movimientoBD.setEstado(ConstantesSistema.MOVIMIENTO_ESTADO_ANULADO);
+                movimientoRepository.save(movimientoBD);
+                return MovimientoRespnseDTO.builder()
+                        .id(movimientoBD.getId())
+                        .fechaMovimiento(movimientoBD.getFechaMovimiento())
+                        .itemMovimientos(movimientoBD.getItemMovimientos())
+                        .tipoMovimiento(movimientoBD.getTipoMovimiento().equals(ConstantesSistema.MOVIMIENTO_VENTA) ? "VENTA" : "COMPRA")
+                        .cambio(movimientoBD.getCambio())
+                        .valorMovimiento(movimientoBD.getValorMovimiento())
+                        .pendiente(movimientoBD.getPendiente())
+                        .descuentoAplicado(movimientoBD.getDescuentoAplicado())
+                        .descripcion(movimientoBD.getDescripcion())
+                        .idRemitente(movimientoBD.getIdRemitente())
+                        .idDestino(movimientoBD.getIdDestino())
+                        .cliente(UsuarioResponseDTO.builder().nombre(movimientoBD.getCliente().getNombre())
+                                .documento(movimientoBD.getCliente().getDocumento())
+                                .telefono(movimientoBD.getCliente().getTelefono())
+                                .direccion(movimientoBD.getCliente().getDireccion())
+                                .ciudad(movimientoBD.getCliente().getCiudad())
+                                .estado(movimientoBD.getCliente().getEstado())
+                                .build())
+                        .vendedor(UsuarioResponseDTO.builder().nombre(movimientoBD.getVendedor().getNombre())
+                                .documento(movimientoBD.getVendedor().getDocumento())
+                                .telefono(movimientoBD.getVendedor().getTelefono())
+                                .direccion(movimientoBD.getVendedor().getDireccion())
+                                .ciudad(movimientoBD.getVendedor().getCiudad())
+                                .estado(movimientoBD.getVendedor().getEstado())
+                                .build())
+                        .build();
+            } else {
+                throw new NotFoundException("No se encontro el movimiento en el sistema");
+            }
+        } catch (Exception e) {
+            throw new BadRequestException(e.getMessage());
+        }
     }
 }
