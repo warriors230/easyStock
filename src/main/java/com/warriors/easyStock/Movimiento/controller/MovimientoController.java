@@ -30,4 +30,9 @@ public class MovimientoController {
     public ResponseEntity<List<MovimientoRespnseDTO>>listarMovimientos(){
         return ResponseEntity.ok().body(movimientoService.listarMovimientos());
     }
+
+    @PostMapping("/anular/{idMovimiento}")
+    public ResponseEntity<MovimientoRespnseDTO> anularMovimiento(@PathVariable Integer idMovimiento){
+        return ResponseEntity.ok().body(movimientoService.anularMovimiento(idMovimiento));
+    }
 }
