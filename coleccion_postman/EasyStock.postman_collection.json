@@ -1,0 +1,528 @@
+{
+	"info": {
+		"_postman_id": "845a8cc9-11f9-4115-98cc-92c996f56f79",
+		"name": "EasyStock",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26676532"
+	},
+	"item": [
+		{
+			"name": "Usuarios",
+			"item": [
+				{
+					"name": "crearUsuarios",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Sebastian Gonzalez\",\r\n    \"documento\":\"34564543\",\r\n    \"telefono\": \"3122345643\",\r\n    \"direccion\": \"calle 50\",\r\n    \"ciudad\":\"Cali\",\r\n    \"usuario\": \"sgonzalez\",\r\n    \"contrasena\": \"112233\",\r\n    \"estado\":true,\r\n    \"correo\":\"sgonzalez@hotmail.com\",\r\n    \"roles\":[\"cliente\"]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/easyStock/usuarios/crear",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"easyStock",
+								"usuarios",
+								"crear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarUsuarios",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{easytoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/easyStock/usuarios/listar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"easyStock",
+								"usuarios",
+								"listar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actualizarUsuarios",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{easytoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nombre\": \"Esteban Lopez\",\r\n    \"documento\": \"31122232213\",\r\n    \"telefono\": \"321123423\",\r\n    \"direccion\": \"calle 70\",\r\n    \"ciudad\": \"Cali\",\r\n    \"usuario\": \"slopez\",\r\n    \"contrasena\": \"112233\",\r\n    \"correo\": \"slopez@hotmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/easyStock/usuarios/actualizar/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"easyStock",
+								"usuarios",
+								"actualizar",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "eliminarUsuarios",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{easytoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/easyStock/usuarios/eliminar/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"easyStock",
+								"usuarios",
+								"eliminar",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Productos",
+			"item": [
+				{
+					"name": "crearProductos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{easytoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descripcion\": \"Cepillo Oralb\",\r\n    \"serial_id\": \"5\",\r\n    \"unidad_medida\": \"UND\",\r\n    \"valor_compra\": 3000,\r\n    \"valor_venta\": 4500,\r\n    \"estado\": true,\r\n    \"cantidad_stock\": 50,\r\n    \"fecha_expiracion\": \"2023-06-10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/easyStock/productos/crear",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"easyStock",
+								"productos",
+								"crear"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarProductos",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{easytoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/easyStock/productos/listar",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"easyStock",
+								"productos",
+								"listar"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "actualizarProductos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{easytoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descripcion\": \"Arroz Diana\",\r\n    \"unidad_medida\": \"Kg\",\r\n    \"valor_compra\": 3000,\r\n    \"valor_venta\": 5000 ,\r\n    \"estado\": true,\r\n    \"cantidad_stock\": 10,\r\n    \"fecha_expiracion\": \"2023-07-10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/easyStock/productos/actualizar/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"easyStock",
+								"productos",
+								"actualizar",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "eliminarProductos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{easytoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/easyStock/productos/eliminar/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"easyStock",
+								"productos",
+								"eliminar",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Movimiento",
+			"item": [
+				{
+					"name": "crearMovimiento",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{easytoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descripcion\": \"Venta de productos a Cliente No Registrado\",\r\n    \"id_remitente\": 3,\r\n    \"id_destino\": 2,\r\n    \"descuento_aplicado\": 5,\r\n    \"tipo_movimiento\": \"V\",\r\n    \"valor_pagado\":34200 ,\r\n    \"item_movimientos\": [\r\n        {\r\n            \"cantidad\": 2,\r\n            \"producto\": {\r\n                \"id\": 1,\r\n                \"descripcion\": \"Atun Isabel\",\r\n                \"ganancia\": 3000.0,\r\n                \"estado\": true,\r\n                \"serial_id\": \"1\",\r\n                \"unidad_medida\": \"Und\",\r\n                \"valor_compra\": 6000.0,\r\n                \"valor_venta\": 9000.0,\r\n                \"cantidad_stock\": 32,\r\n                \"fecha_creacion\": \"2023-05-11\",\r\n                \"fecha_expiracion\": \"2023-06-09\",\r\n                \"fecha_modificacion\": \"2023-05-15\"\r\n            }\r\n        },\r\n        {\r\n            \"cantidad\": 4,\r\n            \"producto\": {\r\n                \"id\": 6,\r\n                \"descripcion\": \"Cepillo Oralb\",\r\n                \"ganancia\": 1500.0,\r\n                \"estado\": true,\r\n                \"serial_id\": \"5\",\r\n                \"unidad_medida\": \"UND\",\r\n                \"valor_compra\": 3000.0,\r\n                \"valor_venta\": 4500.0,\r\n                \"cantidad_stock\": 24,\r\n                \"fecha_creacion\": \"2023-05-11\",\r\n                \"fecha_expiracion\": \"2023-06-09\",\r\n                \"fecha_modificacion\": \"2023-05-15\"\r\n            }\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/easyStock/movimiento/crear/1/999999",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"easyStock",
+								"movimiento",
+								"crear",
+								"1",
+								"999999"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listarMovimientos",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{easytoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/easyStock/movimiento/listar/",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"easyStock",
+								"movimiento",
+								"listar",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "anularMovimientos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{easytoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"descripcion\": \"Arroz Diana\",\r\n    \"unidad_medida\": \"Kg\",\r\n    \"valor_compra\": 3000,\r\n    \"valor_venta\": 5000 ,\r\n    \"estado\": true,\r\n    \"cantidad_stock\": 10,\r\n    \"fecha_expiracion\": \"2023-07-10\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/easyStock/movimiento/anular/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"easyStock",
+								"movimiento",
+								"anular",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "eliminarProductos",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{easytoken}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/easyStock/productos/eliminar/2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"easyStock",
+								"productos",
+								"eliminar",
+								"2"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var data = JSON.parse(responseBody);\r",
+							"postman.setGlobalVariable(\"easytoken\",data.bearer+\" \"+data.token)"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"correo\":\"bquinones@hotmail.com\",\r\n    \"password\":\"112233\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/easyStock/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"easyStock",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
