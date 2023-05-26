@@ -1,4 +1,4 @@
-package com.warriors.easyStock.utils.exceptions;
+package com.warriors.easyStock.Utils.exceptions;
 
 public class NotFoundException extends BadRequestException{
     private static final String DESCRIPTION = "No se encontro el recurso";

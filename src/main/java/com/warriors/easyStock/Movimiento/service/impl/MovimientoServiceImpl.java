@@ -11,10 +11,10 @@ import com.warriors.easyStock.Producto.service.IProductoService;
 import com.warriors.easyStock.Usuario.dto.UsuarioResponseDTO;
 import com.warriors.easyStock.Usuario.entities.Usuario;
 import com.warriors.easyStock.Usuario.service.IUsuarioService;
-import com.warriors.easyStock.utils.constants.ConstantesSistema;
-import com.warriors.easyStock.utils.exceptions.BadRequestException;
-import com.warriors.easyStock.utils.exceptions.ConflictException;
-import com.warriors.easyStock.utils.exceptions.NotFoundException;
+import com.warriors.easyStock.Utils.constants.ConstantesSistema;
+import com.warriors.easyStock.Utils.exceptions.BadRequestException;
+import com.warriors.easyStock.Utils.exceptions.ConflictException;
+import com.warriors.easyStock.Utils.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;

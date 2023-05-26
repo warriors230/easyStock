@@ -1,7 +1,7 @@
-package com.warriors.easyStock.roles.entities;
+package com.warriors.easyStock.Roles.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.warriors.easyStock.roles.enums.RolNombre;
+import com.warriors.easyStock.Roles.enums.RolNombre;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

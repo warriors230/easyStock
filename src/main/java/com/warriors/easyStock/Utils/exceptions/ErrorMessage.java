@@ -1,4 +1,4 @@
-package com.warriors.easyStock.utils.exceptions;
+package com.warriors.easyStock.Utils.exceptions;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

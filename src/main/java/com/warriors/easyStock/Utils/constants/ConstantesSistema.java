@@ -1,4 +1,4 @@
-package com.warriors.easyStock.utils.constants;
+package com.warriors.easyStock.Utils.constants;
 
 public class ConstantesSistema {
     public static final String MOVIMIENTO_COMPRA = "C";

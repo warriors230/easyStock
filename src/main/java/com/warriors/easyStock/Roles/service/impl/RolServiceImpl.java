@@ -1,9 +1,9 @@
-package com.warriors.easyStock.roles.service.impl;
+package com.warriors.easyStock.Roles.service.impl;
 
-import com.warriors.easyStock.roles.entities.Rol;
-import com.warriors.easyStock.roles.enums.RolNombre;
-import com.warriors.easyStock.roles.repository.IRolRepository;
-import com.warriors.easyStock.roles.service.IRolService;
+import com.warriors.easyStock.Roles.entities.Rol;
+import com.warriors.easyStock.Roles.enums.RolNombre;
+import com.warriors.easyStock.Roles.repository.IRolRepository;
+import com.warriors.easyStock.Roles.service.IRolService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;

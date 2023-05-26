@@ -1,7 +1,7 @@
-package com.warriors.easyStock.roles.repository;
+package com.warriors.easyStock.Roles.repository;
 
-import com.warriors.easyStock.roles.entities.Rol;
-import com.warriors.easyStock.roles.enums.RolNombre;
+import com.warriors.easyStock.Roles.entities.Rol;
+import com.warriors.easyStock.Roles.enums.RolNombre;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

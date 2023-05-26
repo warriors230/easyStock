@@ -1,7 +1,7 @@
-package com.warriors.easyStock.roles.service;
+package com.warriors.easyStock.Roles.service;
 
-import com.warriors.easyStock.roles.entities.Rol;
-import com.warriors.easyStock.roles.enums.RolNombre;
+import com.warriors.easyStock.Roles.entities.Rol;
+import com.warriors.easyStock.Roles.enums.RolNombre;
 
 import java.util.Optional;
 

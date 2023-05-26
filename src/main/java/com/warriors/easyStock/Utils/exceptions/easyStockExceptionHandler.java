@@ -1,4 +1,4 @@
-package com.warriors.easyStock.utils.exceptions;
+package com.warriors.easyStock.Utils.exceptions;
 
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
