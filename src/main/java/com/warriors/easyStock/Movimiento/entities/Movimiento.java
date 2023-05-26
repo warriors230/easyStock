@@ -3,7 +3,7 @@ package com.warriors.easyStock.Movimiento.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.warriors.easyStock.Usuario.entities.Usuario;
-import com.warriors.easyStock.utils.constants.ConstantesSistema;
+import com.warriors.easyStock.Utils.constants.ConstantesSistema;
 import lombok.*;
 
 import javax.persistence.*;
