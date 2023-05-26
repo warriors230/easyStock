@@ -4,7 +4,8 @@ import com.warriors.easyStock.Security.dto.JwtDto;
 import com.warriors.easyStock.Security.dto.LoginUsuarioDTO;
 import com.warriors.easyStock.Security.jwt.JwtProvider;
 import com.warriors.easyStock.Usuario.service.IUsuarioService;
-import com.warriors.easyStock.utils.exceptions.BadRequestException;
+
+import com.warriors.easyStock.Utils.exceptions.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -1,6 +1,6 @@
 package com.warriors.easyStock.Usuario.entities;
 
-import com.warriors.easyStock.roles.entities.Rol;
+import com.warriors.easyStock.Roles.entities.Rol;
 import lombok.*;
 
 import javax.persistence.*;

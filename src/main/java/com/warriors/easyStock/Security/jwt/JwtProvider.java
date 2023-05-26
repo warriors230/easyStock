@@ -1,9 +1,10 @@
 package com.warriors.easyStock.Security.jwt;
 
 import com.warriors.easyStock.Security.details.UserDetailsImpl;
-import com.warriors.easyStock.utils.exceptions.ExpireTokenException;
-import com.warriors.easyStock.utils.exceptions.NoSoporteJWTException;
-import com.warriors.easyStock.utils.exceptions.TokenMalFormadoException;
+
+import com.warriors.easyStock.Utils.exceptions.ExpireTokenException;
+import com.warriors.easyStock.Utils.exceptions.NoSoporteJWTException;
+import com.warriors.easyStock.Utils.exceptions.TokenMalFormadoException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
