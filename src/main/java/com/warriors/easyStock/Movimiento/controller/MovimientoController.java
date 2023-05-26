@@ -30,7 +30,7 @@ public class MovimientoController {
     public ResponseEntity<List<MovimientoRespnseDTO>>listarMovimientos(){
         return ResponseEntity.ok().body(movimientoService.listarMovimientos());
     }
-
+    @PreAuthorize("hasAnyRole('ROLE_SUPREMO','ROLE_ADMIN','ROLE_VENDEDOR')")
     @PostMapping("/anular/{idMovimiento}")
     public ResponseEntity<MovimientoRespnseDTO> anularMovimiento(@PathVariable Integer idMovimiento){
         return ResponseEntity.ok().body(movimientoService.anularMovimiento(idMovimiento));
