@@ -2,7 +2,7 @@ package com.warriors.easyStock.Movimiento.service;
 
 import com.warriors.easyStock.Movimiento.dto.MovimientoRespnseDTO;
 import com.warriors.easyStock.Movimiento.entities.Movimiento;
-import com.warriors.easyStock.utils.exceptions.BadRequestException;
+
 
 import java.util.List;
 
