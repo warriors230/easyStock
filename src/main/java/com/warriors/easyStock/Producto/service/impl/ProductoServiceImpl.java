@@ -4,7 +4,7 @@ package com.warriors.easyStock.Producto.service.impl;
 import com.warriors.easyStock.Producto.entities.Producto;
 import com.warriors.easyStock.Producto.repository.IProductoRepository;
 import com.warriors.easyStock.Producto.service.IProductoService;
-import com.warriors.easyStock.utils.exceptions.NotFoundException;
+import com.warriors.easyStock.Utils.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
 
 import org.springframework.stereotype.Service;

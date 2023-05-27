@@ -1,4 +1,4 @@
-package com.warriors.easyStock.utils.exceptions;
+package com.warriors.easyStock.Utils.exceptions;
 
 public class ConflictException extends BadRequestException{
     private static final String DESCRIPTION = "Existe un Conflicto en la petición";

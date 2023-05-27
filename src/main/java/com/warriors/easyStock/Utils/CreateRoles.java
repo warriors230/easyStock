@@ -1,7 +1,5 @@
-package com.warriors.easyStock.utils;
+package com.warriors.easyStock.Utils;
 
-import com.warriors.easyStock.roles.entities.Rol;
-import com.warriors.easyStock.roles.enums.RolNombre;
 import com.warriors.easyStock.roles.service.IRolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;

@@ -2,11 +2,6 @@ package com.warriors.easyStock.Producto.controller;
 
 import com.warriors.easyStock.Producto.entities.Producto;
 import com.warriors.easyStock.Producto.service.IProductoService;
-import com.warriors.easyStock.Usuario.dto.UsuarioNuevoDTO;
-import com.warriors.easyStock.Usuario.entities.Usuario;
-import com.warriors.easyStock.Usuario.service.IUsuarioService;
-import com.warriors.easyStock.utils.exceptions.ExistException;
-import com.warriors.easyStock.utils.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
