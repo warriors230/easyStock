@@ -194,6 +194,9 @@ public class MovimientoServiceImpl implements IMovimientoService {
         try {
             Movimiento movimientoBD = movimientoRepository.findById(idMovimiento).orElse(null);
             if (movimientoBD != null) {
+                if(movimientoBD.getEstado().equals(ConstantesSistema.MOVIMIENTO_ESTADO_ANULADO)){
+                    throw new ConflictException("El movimiento "+movimientoBD.getId()+" Ya se encuentra anulado");
+                }
                 for (ItemMovimiento items : movimientoBD.getItemMovimientos()) {
                     Producto producto = productoService.buscarId(items.getProducto().getId());
                     producto.setCantidadStock(producto.getCantidadStock() + items.getCantidad());
@@ -213,6 +216,7 @@ public class MovimientoServiceImpl implements IMovimientoService {
                         .descripcion(movimientoBD.getDescripcion())
                         .idRemitente(movimientoBD.getIdRemitente())
                         .idDestino(movimientoBD.getIdDestino())
+                        .estado(movimientoBD.getEstado())
                         .cliente(UsuarioResponseDTO.builder().nombre(movimientoBD.getCliente().getNombre())
                                 .documento(movimientoBD.getCliente().getDocumento())
                                 .telefono(movimientoBD.getCliente().getTelefono())

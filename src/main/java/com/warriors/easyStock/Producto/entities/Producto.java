@@ -1,6 +1,7 @@
 package com.warriors.easyStock.Producto.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.warriors.easyStock.Categoria.entities.Categoria;
 import lombok.*;
 
 import javax.persistence.*;
@@ -73,6 +74,9 @@ public class Producto implements Serializable {
     @Column(name = "fecha_modificacion")
     private Date fechaModificacion;
 
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id_categoria")
+    private Categoria Categoria;
     public Double calcularGanancia() {
         return (valorVenta - valorCompra);
     }

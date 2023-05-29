@@ -7,10 +7,6 @@ import com.warriors.easyStock.Usuario.dto.UsuarioNuevoDTO;
 import com.warriors.easyStock.Usuario.entities.Usuario;
 import com.warriors.easyStock.Usuario.repository.IUsuarioRepository;
 import com.warriors.easyStock.Usuario.service.IUsuarioService;
-
-import com.warriors.easyStock.roles.entities.Rol;
-import com.warriors.easyStock.roles.enums.RolNombre;
-import com.warriors.easyStock.roles.service.IRolService;
 import com.warriors.easyStock.Utils.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

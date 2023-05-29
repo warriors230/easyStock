@@ -1,5 +1,7 @@
 package com.warriors.easyStock.Utils;
 
+import com.warriors.easyStock.Roles.entities.Rol;
+import com.warriors.easyStock.Roles.enums.RolNombre;
 import com.warriors.easyStock.Roles.service.IRolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -17,7 +19,7 @@ public class CreateRoles implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-       /* Rol rolAdmin = new Rol(RolNombre.ROLE_ADMIN);
+  /*  Rol rolAdmin = new Rol(RolNombre.ROLE_ADMIN);
         Rol rolsupremo = new Rol(RolNombre.ROLE_SUPREMO);
         Rol rolUser = new Rol(RolNombre.ROLE_USUARIO);
         Rol rolVendedor = new Rol(RolNombre.ROLE_VENDEDOR);

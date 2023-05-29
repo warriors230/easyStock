@@ -106,7 +106,6 @@ public class Movimiento implements Serializable {
     @PreUpdate
     public void preUpdate() {
         this.fechaModificacion = new Date();
-        this.estado = ((valorPagado - pendiente) >= 0D) ? ConstantesSistema.MOVIMIENTO_ESTADO_PAGADO : ConstantesSistema.MOVIMIENTO_ESTADO_ACTIVO;
         this.pendiente = (valorPagado - pendiente) < 0 ? (valorPagado - pendiente) * -1 : 0;
         this.cambio = (valorPagado - pendiente) > 0 ? (valorPagado - pendiente) : 0;
 
