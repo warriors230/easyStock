@@ -19,7 +19,7 @@ public class ProductoController {
     public ProductoController(IProductoService productoService) {
         this.productoService = productoService;
     }
-
+    @PreAuthorize("hasAnyRole('ROLE_SUPREMO','ROLE_ADMIN')")
     @PostMapping("/crear")
     public ResponseEntity<?> crearProductos(@RequestBody Producto producto) {
         return ResponseEntity.ok().body(productoService.crearProducto(producto));
