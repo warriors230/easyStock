@@ -25,6 +25,7 @@ public class CategoriaServiceImpl implements ICategoriaService {
 
     @Override
     public Categoria crearCategoria(Categoria categoria) {
+        categoria.setNombre(categoria.getNombre().toUpperCase());
         return categoriaRepository.save(categoria);
     }
 

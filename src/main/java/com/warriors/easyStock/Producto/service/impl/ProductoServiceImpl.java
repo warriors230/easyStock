@@ -1,12 +1,16 @@
 package com.warriors.easyStock.Producto.service.impl;
 
 
+import com.warriors.easyStock.Categoria.entities.Categoria;
+import com.warriors.easyStock.Categoria.service.ICategoriaService;
+import com.warriors.easyStock.Producto.dto.ProductoRequestDTO;
 import com.warriors.easyStock.Producto.entities.Producto;
 import com.warriors.easyStock.Producto.repository.IProductoRepository;
 import com.warriors.easyStock.Producto.service.IProductoService;
 import com.warriors.easyStock.Utils.exceptions.NotFoundException;
 import lombok.AllArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +21,10 @@ import java.util.List;
 @Transactional
 public class ProductoServiceImpl implements IProductoService {
 
-
+    @Autowired
     private IProductoRepository productoRepository;
+    @Autowired
+    private ICategoriaService categoriaService;
 
     @Override
     public List<Producto> listarProductos() {
@@ -30,7 +36,25 @@ public class ProductoServiceImpl implements IProductoService {
     }
 
     @Override
-    public Producto crearProducto(Producto producto) {
+    public Producto crearProducto(ProductoRequestDTO productoRequestDTO) {
+        System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Categoria "+productoRequestDTO.getIdCategoria());
+        Categoria categoria = new Categoria();
+        if (productoRequestDTO.getIdCategoria() != 0) {
+            categoria = categoriaService.buscarId(productoRequestDTO.getIdCategoria());
+
+            System.out.println(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Categoria "+categoria.getNombre());
+        }
+
+        Producto producto = Producto.builder()
+                .serialID(productoRequestDTO.getSerialID())
+                .descripcion(productoRequestDTO.getDescripcion())
+                .unidadMedida(productoRequestDTO.getUnidadMedida())
+                .valorCompra(productoRequestDTO.getValorCompra())
+                .valorVenta(productoRequestDTO.getValorVenta())
+                .cantidadStock(productoRequestDTO.getCantidadStock())
+                .fechaExpiracion(productoRequestDTO.getFechaExpiracion())
+                .Categoria(categoria)
+                .build();
         producto.setGanancia(producto.calcularGanancia());
         return productoRepository.save(producto);
     }

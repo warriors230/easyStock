@@ -1,5 +1,6 @@
 package com.warriors.easyStock.Producto.controller;
 
+import com.warriors.easyStock.Producto.dto.ProductoRequestDTO;
 import com.warriors.easyStock.Producto.entities.Producto;
 import com.warriors.easyStock.Producto.service.IProductoService;
 
@@ -21,8 +22,8 @@ public class ProductoController {
     }
     @PreAuthorize("hasAnyRole('ROLE_SUPREMO','ROLE_ADMIN')")
     @PostMapping("/crear")
-    public ResponseEntity<?> crearProductos(@RequestBody Producto producto) {
-        return ResponseEntity.ok().body(productoService.crearProducto(producto));
+    public ResponseEntity<?> crearProductos(@RequestBody ProductoRequestDTO productoRequestDTO) {
+        return ResponseEntity.ok().body(productoService.crearProducto(productoRequestDTO));
     }
 
     @PreAuthorize("hasAnyRole('ROLE_SUPREMO','ROLE_ADMIN','ROLE_VENDEDOR')")
@@ -33,7 +34,7 @@ public class ProductoController {
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SUPREMO')")
     @PutMapping("/actualizar/{id}")
-    public ResponseEntity<?> actualizarUsuario(@PathVariable Integer id, @RequestBody Producto producto) {
+    public ResponseEntity<?> actualizarProducto(@PathVariable Integer id, @RequestBody Producto producto) {
         return ResponseEntity.ok().body(productoService.editarProducto(id, producto));
     }
 

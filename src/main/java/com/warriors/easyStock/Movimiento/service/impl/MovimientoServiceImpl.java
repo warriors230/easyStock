@@ -6,6 +6,7 @@ import com.warriors.easyStock.Movimiento.entities.Movimiento;
 import com.warriors.easyStock.Movimiento.repository.IMovimientoRepository;
 import com.warriors.easyStock.Movimiento.service.IItemMovimientoService;
 import com.warriors.easyStock.Movimiento.service.IMovimientoService;
+import com.warriors.easyStock.Producto.dto.ProductoRequestDTO;
 import com.warriors.easyStock.Producto.entities.Producto;
 import com.warriors.easyStock.Producto.service.IProductoService;
 import com.warriors.easyStock.Usuario.dto.UsuarioResponseDTO;
@@ -90,7 +91,18 @@ public class MovimientoServiceImpl implements IMovimientoService {
                         producto = item.getProducto();
                         producto.setCantidadStock(item.getCantidad());
                         producto.setEstado(false);
-                        productoService.crearProducto(producto);
+                        ProductoRequestDTO productoRequestDTO = ProductoRequestDTO.builder()
+                                .descripcion(producto.getDescripcion())
+                                .serialID(producto.getSerialID())
+                                .unidadMedida(producto.getUnidadMedida())
+                                .valorCompra(producto.getValorCompra())
+                                .valorVenta(producto.getValorVenta())
+                                .cantidadStock(producto.getCantidadStock())
+                                .estado(producto.getEstado())
+                                .fechaExpiracion(producto.getFechaExpiracion())
+                                .idCategoria(0)
+                                .build();
+                        productoService.crearProducto(productoRequestDTO);
                     }
                     item.setValorItemMovimiento(item.calcularImporteCompra());
                     itemMovimientoService.crearItem(item);

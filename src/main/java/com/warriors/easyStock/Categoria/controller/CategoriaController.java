@@ -11,11 +11,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/categorias")
+@PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SUPREMO')")
 public class CategoriaController {
     @Autowired
     private ICategoriaService categoriaService;
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_SUPREMO')")
+
     @PostMapping("/crear")
     public ResponseEntity<Categoria> crearCategria(@RequestBody Categoria categoria) {
         return ResponseEntity.ok(categoriaService.crearCategoria(categoria));

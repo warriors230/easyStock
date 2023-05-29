@@ -74,7 +74,8 @@ public class Producto implements Serializable {
     @Column(name = "fecha_modificacion")
     private Date fechaModificacion;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER,cascade = {CascadeType.ALL})
+    @JsonProperty("categoria_id")
     @JoinColumn(name = "id_categoria")
     private Categoria Categoria;
     public Double calcularGanancia() {
@@ -84,11 +85,13 @@ public class Producto implements Serializable {
     @PrePersist
     public void prePersist() {
         this.fechaCreacion = new Date();
+        this.estado = cantidadStock > 0 ? true : false;
     }
 
     @PreUpdate
     public void preUpdate() {
         this.fechaModificacion = new Date();
+        this.estado = cantidadStock > 0 ? true : false;
     }
 
 }
