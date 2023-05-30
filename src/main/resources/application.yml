@@ -22,7 +22,7 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/easyStock
     username: postgres
-    password: warriors230
+    password: admin
     driver-class-name: org.postgresql.Driver
 
 security:
