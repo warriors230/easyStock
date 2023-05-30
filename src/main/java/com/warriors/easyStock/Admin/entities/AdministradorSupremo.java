@@ -17,6 +17,7 @@ public class AdministradorSupremo implements Serializable {
     @Column(name = "id_administrador", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    
 
     @Size(max = 255)
     @Column(name = "\"user\"")
